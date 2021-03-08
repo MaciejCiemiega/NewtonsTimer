@@ -63,7 +63,6 @@ fun SwingingBalls(modifier: Modifier = Modifier) {
     }
 }
 
-
 @Composable
 private fun animateAngles(viewModel: TimerViewModel): FloatArray {
     val state = viewModel.state as? TimerState.Configured.Running ?: return viewModel.getAnimationAngles()

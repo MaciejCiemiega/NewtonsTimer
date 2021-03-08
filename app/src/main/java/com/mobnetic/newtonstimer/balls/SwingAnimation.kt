@@ -50,10 +50,6 @@ class SwingAnimation(maxAngle: Float) {
         val elapsedMillis = state.elapsedMillis + SWING_DURATION_MILLIS / 2
         val previousCycleIndex = elapsedMillis / CYCLE_DURATION_MILLIS
         val nextCycleIndex = (elapsedMillis + tickDuration) / CYCLE_DURATION_MILLIS
-
-//        val seconds = TimeUnit.MILLISECONDS.toSeconds(elapsedMillis) % 60
-//        val tenthsOfSecond = elapsedMillis % 1000 / 100
-//        val timestamp = String.format("%02d.%d", seconds, tenthsOfSecond)
         return previousCycleIndex != nextCycleIndex
     }
 

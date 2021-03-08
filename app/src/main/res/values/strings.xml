@@ -13,8 +13,6 @@
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="reset">reset</string>
-<!--    <string name="add_5_seconds">+5\"</string>
-    <string name="add_5_seconds_description">Add 5 Seconds</string>-->
     <string name="light_mode">Switch to light mode</string>
     <string name="dark_mode">Switch to dark mode</string>
 </resources>

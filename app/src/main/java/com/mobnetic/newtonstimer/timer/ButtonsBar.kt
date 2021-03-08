@@ -20,7 +20,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
@@ -31,7 +30,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DarkMode
@@ -44,13 +42,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobnetic.newtonstimer.R
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun ButtonsBar(modifier: Modifier = Modifier) {
@@ -70,7 +64,6 @@ fun ButtonsBar(modifier: Modifier = Modifier) {
         val playPauseButtonSize = Modifier.size(72.dp)
         if (viewModel.state is TimerState.Configured) {
             PlayPauseButton(
-                enabled = viewModel.canPlayOrPause,
                 isRunning = viewModel.state is TimerState.Configured.Running,
                 pause = viewModel::pause,
                 play = viewModel::play,
@@ -84,7 +77,6 @@ fun ButtonsBar(modifier: Modifier = Modifier) {
             ResetButton(onReset = viewModel::reset, Modifier.weight(1f))
         } else {
             Spacer(Modifier.weight(1f))
-//            AddDurationButton(onDurationAdded = viewModel::addDurationMillis)
         }
     }
 }
@@ -107,28 +99,24 @@ private fun DarkModeToggleButton(
 
 @Composable
 private fun PlayPauseButton(
-    enabled: Boolean,
     isRunning: Boolean,
     pause: () -> Unit,
     play: () -> Unit,
     modifier: Modifier
 ) {
     val color by animateColorAsState(MaterialTheme.colors.primary)
-    val colors = ButtonDefaults.outlinedButtonColors(
-        backgroundColor = Color.Transparent,
-        contentColor = color
-    )
     OutlinedButton(
         onClick = { if (isRunning) pause() else play() },
         modifier = modifier.aspectRatio(1f),
-        enabled = enabled,
         shape = CircleShape,
-        border = BorderStroke(1.dp, colors.contentColor(enabled).value),
-        colors = colors,
+        border = BorderStroke(1.dp, color),
+        colors = ButtonDefaults.outlinedButtonColors(
+            backgroundColor = Color.Transparent,
+            contentColor = color
+        ),
         contentPadding = PaddingValues()
     ) {
-        val modifier = Modifier
-            .padding(12.dp)
+        val modifier = Modifier.padding(12.dp)
         when (isRunning) {
             true -> Icon(Icons.Default.Pause, stringResource(R.string.pause), modifier)
             else -> Icon(Icons.Default.PlayArrow, stringResource(R.string.play), modifier)
@@ -145,19 +133,4 @@ private fun ResetButton(onReset: () -> Unit, modifier: Modifier) {
     }
 }
 
-//@Composable
-//private fun AddDurationButton(onDurationAdded: (Long) -> Unit) {
-//    IconButton(onClick = { onDurationAdded(DURATION_TO_ADD) }) {
-//        val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
-//        val contentDescription = stringResource(R.string.add_5_seconds_description)
-//        Text(
-//            text = stringResource(R.string.add_5_seconds),
-//            modifier = Modifier.semantics { this.contentDescription = contentDescription },
-//            fontSize = 26.sp,
-//            color = color
-//        )
-//    }
-//}
-
-//private val DURATION_TO_ADD = TimeUnit.SECONDS.toMillis(5)
 private val ICONS_SIZE = 36.dp

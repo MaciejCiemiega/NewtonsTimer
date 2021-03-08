@@ -42,10 +42,12 @@ import java.util.concurrent.TimeUnit
 fun Display(modifier: Modifier = Modifier) {
     BoxWithConstraints(modifier, Alignment.Center) {
         val viewModel: TimerViewModel = viewModel()
+
         val isConfigured = viewModel.state is TimerState.Configured
         val digitsColor by animateColorAsState(MaterialTheme.colors.primaryVariant)
         val separatorsColor by animateColorAsState(MaterialTheme.colors.onBackground)
         val fontSize = LocalDensity.current.calculateTimerFontSizeIn(constraints)
+
         Text(
             text = formatTime(viewModel.displayedMillis, isConfigured, separatorsColor, fontSize),
             color = digitsColor,
@@ -60,23 +62,30 @@ private fun formatTime(millis: Long, isConfigured: Boolean, separatorsColor: Col
     val minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
     val seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
     val tenthsOfSecond = millis % 1000 / 100
-    if (isConfigured) {
-        val separatorsStyle = SpanStyle(separatorsColor)
-        if (minutes > 0) {
-            append(String.format("%02d", minutes))
-            withStyle(separatorsStyle) { append(":") }
-        }
-        append(String.format("%02d", seconds))
-        withStyle(separatorsStyle) { append(".") }
-        append(String.format("%d", tenthsOfSecond))
-    } else {
-        val separatorsStyle = SpanStyle(separatorsColor, fontSize = fontSize / 3)
-        append(String.format("%02d", minutes))
-        withStyle(separatorsStyle) { append("m ") }
-        append(String.format("%02d", seconds))
-        withStyle(separatorsStyle) { append("s") }
+    when (isConfigured) {
+        true -> appendConfiguredTime(minutes, seconds, tenthsOfSecond, separatorsColor)
+        false -> appendNotConfiguredTime(minutes, seconds, separatorsColor, fontSize)
     }
 }.toAnnotatedString()
+
+private fun AnnotatedString.Builder.appendConfiguredTime(minutes: Long, seconds: Long, tenthsOfSecond: Long, separatorsColor: Color) {
+    val separatorsStyle = SpanStyle(separatorsColor)
+    if (minutes > 0) {
+        append(String.format("%02d", minutes))
+        withStyle(separatorsStyle) { append(":") }
+    }
+    append(String.format("%02d", seconds))
+    withStyle(separatorsStyle) { append(".") }
+    append(String.format("%d", tenthsOfSecond))
+}
+
+private fun AnnotatedString.Builder.appendNotConfiguredTime(minutes: Long, seconds: Long, separatorsColor: Color, fontSize: TextUnit) {
+    val separatorsStyle = SpanStyle(separatorsColor, fontSize = fontSize / 3)
+    append(String.format("%02d", minutes))
+    withStyle(separatorsStyle) { append("m ") }
+    append(String.format("%02d", seconds))
+    withStyle(separatorsStyle) { append("s") }
+}
 
 @Composable
 private fun Density.calculateTimerFontSizeIn(constraints: Constraints): TextUnit {

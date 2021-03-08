@@ -67,14 +67,6 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         setNewState(NotConfigured())
     }
 
-//    fun addDurationMillis(addedMillis: Long) {
-//        val state = getAndEnsureState()
-//        val remainingMillis = state.remainingMillis
-//        val addedMillisCoerced = (remainingMillis + addedMillis).coerceAtMost(MAX_DURATION_MILLIS) - remainingMillis
-//        val newDurationMillis = state.durationMillis + addedMillisCoerced
-//        setNewState(state.withNewDuration(newDurationMillis))
-//    }
-
     fun getAnimationAngles() = when (val state = _state) {
         is Configured -> state.swingAnimation.getAnimationAngles(state)
         else -> FloatArray(BALLS_COUNT)

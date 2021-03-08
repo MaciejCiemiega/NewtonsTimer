@@ -22,20 +22,14 @@ import com.mobnetic.newtonstimer.timer.TimerViewModel.Companion.MAX_DURATION_MIL
 
 sealed class TimerState(val durationMillis: Long) {
     val startAngle: Float = durationToAngle(durationMillis)
-    abstract val elapsedMillis: Long
-
     val remainingMillis get() = (durationMillis - elapsedMillis).coerceAtLeast(0)
 
-    abstract fun withNewDuration(newDurationMillis: Long): TimerState
+    abstract val elapsedMillis: Long
 
     class NotConfigured(durationMillis: Long = 0) : TimerState(durationMillis) {
         override val elapsedMillis = 0L
 
         constructor(angle: Float) : this(durationMillis = angleToDuration(angle))
-
-        override fun withNewDuration(newDurationMillis: Long) = NotConfigured(
-            durationMillis = newDurationMillis
-        )
 
         fun started() = Configured.Running(durationMillis = durationMillis)
     }
@@ -51,15 +45,8 @@ sealed class TimerState(val durationMillis: Long) {
             durationMillis: Long,
             override val elapsedMillis: Long = 0
         ) : Configured(durationMillis) {
-            override fun withNewDuration(newDurationMillis: Long) = Paused(
-                durationMillis = newDurationMillis,
-                elapsedMillis = elapsedMillis
-            )
 
-            fun resumed() = Running(
-                durationMillis = durationMillis,
-                alreadyElapsedMillis = elapsedMillis
-            )
+            fun resumed() = Running(durationMillis = durationMillis, alreadyElapsedMillis = elapsedMillis)
         }
 
         class Running(
@@ -69,15 +56,7 @@ sealed class TimerState(val durationMillis: Long) {
             private val resumedAtMillis = SystemClock.uptimeMillis()
             override val elapsedMillis get() = alreadyElapsedMillis + SystemClock.uptimeMillis() - resumedAtMillis
 
-            override fun withNewDuration(newDurationMillis: Long) = Running(
-                durationMillis = newDurationMillis,
-                alreadyElapsedMillis = elapsedMillis
-            )
-
-            fun paused() = Paused(
-                durationMillis = durationMillis,
-                elapsedMillis = elapsedMillis
-            )
+            fun paused() = Paused(durationMillis = durationMillis, elapsedMillis = elapsedMillis)
         }
     }
 
