@@ -16,7 +16,6 @@
 package com.mobnetic.newtonstimer.timer
 
 import android.app.Application
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -28,6 +27,7 @@ import com.mobnetic.newtonstimer.timer.TimerState.Configured.Running
 import com.mobnetic.newtonstimer.timer.TimerState.NotConfigured
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit
 class TimerViewModel(application: Application) : AndroidViewModel(application) {
 
     private val hitSoundPlayer = HitSoundPlayer(application)
+    @OptIn(ObsoleteCoroutinesApi::class)
     private val tickerChannel = ticker(delayMillis = TICK_DURATION_MILLIS, initialDelayMillis = 0)
     private var timerJob: Job? = null
 
@@ -43,7 +44,6 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     var darkMode by mutableStateOf(true)
     var displayedMillis by mutableStateOf(_state.remainingMillis)
     val state get() = _state
-    val canPlayOrPause by derivedStateOf { state.durationMillis > 0 }
 
     fun configureAngle(angle: Float) {
         if (getAndEnsureState() is Configured) return

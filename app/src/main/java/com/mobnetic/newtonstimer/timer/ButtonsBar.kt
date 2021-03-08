@@ -89,10 +89,10 @@ private fun DarkModeToggleButton(
 ) {
     IconButton(onClick = { onDarkModeChanged(!darkMode) }, modifier) {
         val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
-        val modifier = Modifier.size(ICONS_SIZE)
+        val iconModifier = Modifier.size(ICONS_SIZE)
         when (darkMode) {
-            true -> Icon(Icons.Default.LightMode, stringResource(R.string.light_mode), modifier, color)
-            else -> Icon(Icons.Default.DarkMode, stringResource(R.string.dark_mode), modifier, color)
+            true -> Icon(Icons.Default.LightMode, stringResource(R.string.light_mode), iconModifier, color)
+            else -> Icon(Icons.Default.DarkMode, stringResource(R.string.dark_mode), iconModifier, color)
         }
     }
 }
@@ -116,10 +116,10 @@ private fun PlayPauseButton(
         ),
         contentPadding = PaddingValues()
     ) {
-        val modifier = Modifier.padding(12.dp)
+        val iconModifier = Modifier.padding(12.dp)
         when (isRunning) {
-            true -> Icon(Icons.Default.Pause, stringResource(R.string.pause), modifier)
-            else -> Icon(Icons.Default.PlayArrow, stringResource(R.string.play), modifier)
+            true -> Icon(Icons.Default.Pause, stringResource(R.string.pause), iconModifier)
+            else -> Icon(Icons.Default.PlayArrow, stringResource(R.string.play), iconModifier)
         }
     }
 }
@@ -128,8 +128,8 @@ private fun PlayPauseButton(
 private fun ResetButton(onReset: () -> Unit, modifier: Modifier) {
     IconButton(onClick = onReset, modifier) {
         val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
-        val modifier = Modifier.size(ICONS_SIZE)
-        Icon(Icons.Default.Close, stringResource(R.string.reset), modifier, color)
+        val iconModifier = Modifier.size(ICONS_SIZE)
+        Icon(Icons.Default.Close, stringResource(R.string.reset), iconModifier, color)
     }
 }
 
