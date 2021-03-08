@@ -7,8 +7,8 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.example.androiddevchallenge"
-        minSdkVersion 23
+        applicationId "com.mobnetic.newtonstimer"
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -73,6 +73,7 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02"
 
     testImplementation 'junit:junit:4.13.2'
 
