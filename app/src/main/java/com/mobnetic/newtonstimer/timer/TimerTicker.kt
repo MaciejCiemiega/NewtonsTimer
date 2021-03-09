@@ -54,7 +54,7 @@ class TimerTicker(
         val elapsedMillis = state.elapsedMillis
         onTick()
         if (state.swingAnimation.isBallHit(elapsedMillis, previousElapsedMillis)) {
-            onBallHit(state.remainingEnergy)
+            onBallHit(state.absoluteRemainingEnergy)
         }
         return elapsedMillis
     }

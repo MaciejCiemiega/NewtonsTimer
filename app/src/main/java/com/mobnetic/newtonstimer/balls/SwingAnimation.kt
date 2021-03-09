@@ -26,6 +26,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.mobnetic.newtonstimer.setupAngles
 import com.mobnetic.newtonstimer.timer.TimerState
+import com.mobnetic.newtonstimer.timer.relativeRemainingEnergy
 import java.util.concurrent.TimeUnit
 
 class SwingAnimation(maxAngle: Float) {
@@ -54,7 +55,7 @@ class SwingAnimation(maxAngle: Float) {
     }
 
     fun SnapshotStateList<Float>.setupAngles(state: TimerState.Configured) {
-        val angle = state.rawAngle() * state.remainingEnergy
+        val angle = state.rawAngle() * state.relativeRemainingEnergy
         val angleAfterBeingHit = angle * SWING_ANGLE_AFTER_BEING_HIT_MULTIPLIER
         val reboundAngleAfterHit = angle * SWING_REBOUND_ANGLE_AFTER_HIT_MULTIPLIER
         val isFirstBallSwinging = angle > 0

@@ -95,7 +95,7 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
         const val MAX_ANGLE = 50f
-        val MAX_DURATION_MILLIS = TimeUnit.SECONDS.toMillis(90)
+        val MAX_DURATION_MILLIS = TimeUnit.SECONDS.toMillis(60)
         private const val BALLS_COUNT = 5
     }
 }

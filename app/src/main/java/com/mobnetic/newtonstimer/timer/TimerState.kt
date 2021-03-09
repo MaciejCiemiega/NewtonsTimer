@@ -38,7 +38,6 @@ sealed class TimerState(val durationMillis: Long) {
     sealed class Configured(durationMillis: Long) : TimerState(durationMillis) {
         val swingAnimation = SwingAnimation(startAngle)
         val isFinished get() = remainingMillis <= 0
-        val remainingEnergy get() = remainingMillis / durationMillis.toFloat()
 
         class Paused(
             durationMillis: Long,
@@ -63,6 +62,8 @@ sealed class TimerState(val durationMillis: Long) {
     }
 }
 
+val TimerState.Configured.absoluteRemainingEnergy get() = remainingMillis / MAX_DURATION_MILLIS.toFloat()
+val TimerState.Configured.relativeRemainingEnergy get() = remainingMillis / durationMillis.toFloat()
 fun TimerState.canBeStarted() = durationMillis > 0
 fun NotConfigured.started() = Running(durationMillis = durationMillis)
 fun Paused.resumed() = Running(durationMillis = durationMillis, alreadyElapsedMillis = elapsedMillis)
