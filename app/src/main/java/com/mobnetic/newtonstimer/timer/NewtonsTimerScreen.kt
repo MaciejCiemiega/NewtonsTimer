@@ -22,19 +22,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobnetic.newtonstimer.balls.SHADOW_TOP_OFFSET
-import com.mobnetic.newtonstimer.balls.SwingingBalls
+import com.mobnetic.newtonstimer.balls.SwingingBallsContainer
 import com.mobnetic.newtonstimer.sinDegree
 import com.mobnetic.newtonstimer.timer.TimerViewModel.Companion.MAX_ANGLE
 import com.mobnetic.newtonstimer.ui.isLandscape
@@ -61,22 +58,19 @@ private fun NewtonsTimerPortrait(viewModel: TimerViewModel) {
                 .animateContentSize()
                 .weight(0.88f)
         ) {
-            val isConfigured = viewModel.state is TimerState.Configured
-            val ballsInnerRatio = BALLS_INNER_ASPECT_RATIO_PORTRAIT
-            val ballsOuterRatio by animateFloatAsState(if (isConfigured) 1.1f * sinDegree(MAX_ANGLE) + ballsInnerRatio else sinDegree(MAX_ANGLE) + (ballsInnerRatio / 2f))
-            BoxWithConstraints(
-                modifier = Modifier.aspectRatio(ballsOuterRatio),
-                contentAlignment = Alignment.Center
-            ) {
-                val translationX by animateFloatAsState(targetValue = if (isConfigured) 0f else constraints.maxWidth / 2f)
-                SwingingBalls(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(ballsInnerRatio)
-                        .graphicsLayer(translationX = translationX)
-                )
-            }
+            val ballsOuterRatio by animateFloatAsState(
+                when (viewModel.isConfigured) {
+                    true -> 1.1f * sinDegree(MAX_ANGLE) + BALLS_INNER_ASPECT_RATIO_PORTRAIT
+                    else -> sinDegree(MAX_ANGLE) + (BALLS_INNER_ASPECT_RATIO_PORTRAIT / 2f)
+                }
+            )
+            SwingingBallsContainer(
+                viewModel = viewModel,
+                ballsInnerRatio = BALLS_INNER_ASPECT_RATIO_PORTRAIT,
+                modifier = Modifier.aspectRatio(ballsOuterRatio)
+            )
             Display(
+                viewModel = viewModel,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
@@ -84,6 +78,7 @@ private fun NewtonsTimerPortrait(viewModel: TimerViewModel) {
             )
         }
         ButtonsBar(
+            viewModel = viewModel,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
@@ -102,33 +97,31 @@ private fun NewtonsTimerLandscape(viewModel: TimerViewModel) {
         Column(
             modifier = Modifier
                 .animateContentSize()
-                .weight(1.5f)
-                .padding(horizontal = 16.dp, vertical = 24.dp)
+                .weight(1.2f)
+                .padding(16.dp)
         ) {
+            Spacer(modifier = Modifier.weight(0.25f))
             Display(
+                viewModel = viewModel,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
             )
             Spacer(modifier = Modifier.weight(1f))
-            ButtonsBar(modifier = Modifier.fillMaxWidth())
+            ButtonsBar(
+                viewModel = viewModel,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.weight(0.3f))
         }
 
-        val isConfigured = viewModel.state is TimerState.Configured
-        BoxWithConstraints(
+        SwingingBallsContainer(
+            viewModel = viewModel,
+            ballsInnerRatio = BALLS_INNER_ASPECT_RATIO_LANDSCAPE,
             modifier = Modifier
                 .weight(1f)
-                .padding(bottom = SHADOW_TOP_OFFSET + 24.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            val translationX by animateFloatAsState(targetValue = if (isConfigured) 0f else constraints.maxWidth / 2f)
-            SwingingBalls(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .aspectRatio(BALLS_INNER_ASPECT_RATIO_LANDSCAPE)
-                    .graphicsLayer(translationX = translationX)
-            )
-        }
+                .padding(bottom = SHADOW_TOP_OFFSET + 24.dp)
+        )
     }
 }
 

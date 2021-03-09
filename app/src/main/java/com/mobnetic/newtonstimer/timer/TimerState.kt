@@ -32,7 +32,7 @@ sealed class TimerState(val durationMillis: Long) {
     class NotConfigured(durationMillis: Long = 0) : TimerState(durationMillis) {
         override val elapsedMillis = 0L
 
-        constructor(angle: Float) : this(durationMillis = angleToDuration(angle))
+        constructor(startAngle: Float) : this(durationMillis = angleToDuration(startAngle))
     }
 
     sealed class Configured(durationMillis: Long) : TimerState(durationMillis) {

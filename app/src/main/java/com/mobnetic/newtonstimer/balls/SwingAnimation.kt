@@ -23,7 +23,8 @@ import androidx.compose.animation.core.TargetBasedAnimation
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
-import com.mobnetic.newtonstimer.createAnglesArray
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import com.mobnetic.newtonstimer.setupAngles
 import com.mobnetic.newtonstimer.timer.TimerState
 import java.util.concurrent.TimeUnit
 
@@ -52,27 +53,26 @@ class SwingAnimation(maxAngle: Float) {
         return previousCycleIndex != cycleIndex
     }
 
-    fun getAnimationAngles(state: TimerState.Configured, ballsCount: Int): FloatArray {
+    fun SnapshotStateList<Float>.setupAngles(state: TimerState.Configured) {
         val angle = state.rawAngle() * state.remainingEnergy
         val angleAfterBeingHit = angle * SWING_ANGLE_AFTER_BEING_HIT_MULTIPLIER
         val reboundAngleAfterHit = angle * SWING_REBOUND_ANGLE_AFTER_HIT_MULTIPLIER
-        val isLeftBallSwinging = angle > 0
+        val isFirstBallSwinging = angle > 0
         val isFirstSwing = state.elapsedMillis <= MILLIS_UNTIL_HIT
 
-        fun getLeftBallAngle() = if (isLeftBallSwinging) angle else reboundAngleAfterHit
-        fun getRightBallAngle() = if (!isLeftBallSwinging) angle else reboundAngleAfterHit
+        fun getFirstBallAngle() = if (isFirstBallSwinging) angle else reboundAngleAfterHit
+        fun getLastBallAngle() = if (!isFirstBallSwinging) angle else reboundAngleAfterHit
         fun getMiddleBallAngle(index: Int): Float {
-            val indexDistanceFromTheSwingingBall = (if (isLeftBallSwinging) ballsCount - index else index) - 1
+            val indexDistanceFromTheSwingingBall = (if (isFirstBallSwinging) size - index else index) - 1
             return angleAfterBeingHit * (1 + indexDistanceFromTheSwingingBall * SWING_ADDITIONAL_BOUNCE_BETWEEN_BALLS_MULTIPLIER)
         }
 
-        return when (isFirstSwing) {
-            true -> createAnglesArray(ballsCount, leftBallAngle = getLeftBallAngle())
-            else -> createAnglesArray(
-                ballsCount,
-                leftBallAngle = getLeftBallAngle(),
+        when (isFirstSwing) {
+            true -> setupAngles(firstBallAngle = getFirstBallAngle())
+            else -> setupAngles(
+                firstBallAngle = getFirstBallAngle(),
                 middleBallsAngle = ::getMiddleBallAngle,
-                rightBallAngle = getRightBallAngle()
+                lastBallAngle = getLastBallAngle()
             )
         }
     }
@@ -86,8 +86,8 @@ class SwingAnimation(maxAngle: Float) {
     private companion object {
         const val CYCLE_DURATION_MILLIS = 500L
         const val SWING_ANGLE_AFTER_BEING_HIT_MULTIPLIER = 0.05f
-        const val SWING_REBOUND_ANGLE_AFTER_HIT_MULTIPLIER = -SWING_ANGLE_AFTER_BEING_HIT_MULTIPLIER / 4
-        const val SWING_ADDITIONAL_BOUNCE_BETWEEN_BALLS_MULTIPLIER = 0.14f
+        const val SWING_REBOUND_ANGLE_AFTER_HIT_MULTIPLIER = -SWING_ANGLE_AFTER_BEING_HIT_MULTIPLIER / 4f
+        const val SWING_ADDITIONAL_BOUNCE_BETWEEN_BALLS_MULTIPLIER = 0.3f
         const val MILLIS_UNTIL_HIT = CYCLE_DURATION_MILLIS / 2
         val SWING_EASING = CubicBezierEasing(0.7f, 0f, 0.3f, 1f)
     }

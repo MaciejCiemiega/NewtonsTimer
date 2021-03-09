@@ -17,11 +17,12 @@ package com.mobnetic.newtonstimer.timer
 
 import android.app.Application
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobnetic.newtonstimer.createAnglesArray
+import com.mobnetic.newtonstimer.setupAngles
 import com.mobnetic.newtonstimer.timer.TimerState.Configured
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Paused
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Running
@@ -43,10 +44,12 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     var darkMode by mutableStateOf(true)
     var displayedMillis by mutableStateOf(_state.remainingMillis)
     val state get() = _state
+    val angles = mutableStateListOf(*Array(BALLS_COUNT) { 0f })
+    val isConfigured get() = state is Configured
 
-    fun configureAngle(angle: Float) {
+    fun configureStartAngle(startAngle: Float) {
         if (state is Configured) return
-        setNewState(NotConfigured(angle = angle.coerceAtLeast(0f).coerceAtMost(MAX_ANGLE)))
+        setNewState(NotConfigured(startAngle.coerceAtLeast(0f).coerceAtMost(MAX_ANGLE)))
     }
 
     fun play() {
@@ -67,9 +70,11 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
         setNewState(NotConfigured())
     }
 
-    fun getAnimationAngles() = when (val state = _state) {
-        is Configured -> state.swingAnimation.getAnimationAngles(state, BALLS_COUNT)
-        else -> createAnglesArray(BALLS_COUNT, leftBallAngle = state.startAngle)
+    fun refreshAngles() {
+        when (val state = _state) {
+            is Configured -> with(state.swingAnimation) { angles.setupAngles(state) }
+            else -> angles.setupAngles(firstBallAngle = state.startAngle)
+        }
     }
 
     override fun onCleared() {

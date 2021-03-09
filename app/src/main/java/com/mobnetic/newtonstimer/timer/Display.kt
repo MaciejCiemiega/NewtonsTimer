@@ -35,21 +35,17 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.TextUnit
-import androidx.lifecycle.viewmodel.compose.viewModel
 import java.util.concurrent.TimeUnit
 
 @Composable
-fun Display(modifier: Modifier = Modifier) {
+fun Display(viewModel: TimerViewModel, modifier: Modifier = Modifier) {
     BoxWithConstraints(modifier, Alignment.Center) {
-        val viewModel: TimerViewModel = viewModel()
-
-        val isConfigured = viewModel.state is TimerState.Configured
         val digitsColor by animateColorAsState(MaterialTheme.colors.primaryVariant)
         val separatorsColor by animateColorAsState(MaterialTheme.colors.onBackground)
         val fontSize = LocalDensity.current.calculateTimerFontSizeIn(constraints)
 
         Text(
-            text = formatTime(viewModel.displayedMillis, isConfigured, separatorsColor, fontSize),
+            text = formatTime(viewModel.displayedMillis, viewModel.isConfigured, separatorsColor, fontSize),
             color = digitsColor,
             fontWeight = FontWeight.Thin,
             fontSize = fontSize,

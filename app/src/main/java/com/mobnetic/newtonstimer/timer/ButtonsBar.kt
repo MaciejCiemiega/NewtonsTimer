@@ -45,18 +45,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobnetic.newtonstimer.R
 
 @Composable
-fun ButtonsBar(modifier: Modifier = Modifier) {
+fun ButtonsBar(viewModel: TimerViewModel, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.height(BUTTONS_BAR_HEIGHT),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val viewModel: TimerViewModel = viewModel()
-
         DarkModeToggleButton(
             darkMode = viewModel.darkMode,
             onDarkModeChanged = { viewModel.darkMode = it },
@@ -118,7 +115,9 @@ private fun PlayPauseButton(
         ),
         contentPadding = PaddingValues()
     ) {
-        val iconModifier = Modifier.padding(16.dp).fillMaxSize()
+        val iconModifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
         when (isRunning) {
             true -> Icon(Icons.Default.Pause, stringResource(R.string.pause), iconModifier)
             else -> Icon(Icons.Default.PlayArrow, stringResource(R.string.play), iconModifier)

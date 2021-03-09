@@ -15,6 +15,7 @@
  */
 package com.mobnetic.newtonstimer
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import java.lang.Math.toDegrees
 import java.lang.Math.toRadians
 import kotlin.math.atan
@@ -24,15 +25,16 @@ fun sinDegree(angle: Float): Float = sin(toRadians(angle.toDouble())).toFloat()
 
 fun atanDegree(x: Float): Float = toDegrees(atan(x).toDouble()).toFloat()
 
-fun createAnglesArray(
-    ballsCount: Int,
-    leftBallAngle: Float = 0f,
+fun SnapshotStateList<Float>.setupAngles(
+    firstBallAngle: Float = 0f,
     middleBallsAngle: (index: Int) -> Float = { 0f },
-    rightBallAngle: Float = 0f
-) = FloatArray(ballsCount) { index ->
-    when (index) {
-        0 -> leftBallAngle
-        ballsCount - 1 -> rightBallAngle
-        else -> middleBallsAngle(index)
+    lastBallAngle: Float = 0f
+) = apply {
+    indices.forEach { index ->
+        this[index] = when (index) {
+            0 -> firstBallAngle
+            lastIndex -> lastBallAngle
+            else -> middleBallsAngle(index)
+        }
     }
 }
