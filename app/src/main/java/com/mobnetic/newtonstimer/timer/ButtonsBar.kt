@@ -22,6 +22,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -49,7 +51,7 @@ import com.mobnetic.newtonstimer.R
 @Composable
 fun ButtonsBar(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier,
+        modifier = modifier.height(BUTTONS_BAR_HEIGHT),
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -61,7 +63,7 @@ fun ButtonsBar(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1f)
         )
 
-        val playPauseButtonSize = Modifier.size(72.dp)
+        val playPauseButtonSize = Modifier.size(BUTTONS_BAR_HEIGHT)
         if (viewModel.state is TimerState.Configured) {
             PlayPauseButton(
                 isRunning = viewModel.state is TimerState.Configured.Running,
@@ -116,7 +118,7 @@ private fun PlayPauseButton(
         ),
         contentPadding = PaddingValues()
     ) {
-        val iconModifier = Modifier.padding(12.dp)
+        val iconModifier = Modifier.padding(16.dp).fillMaxSize()
         when (isRunning) {
             true -> Icon(Icons.Default.Pause, stringResource(R.string.pause), iconModifier)
             else -> Icon(Icons.Default.PlayArrow, stringResource(R.string.play), iconModifier)
@@ -134,3 +136,4 @@ private fun ResetButton(onReset: () -> Unit, modifier: Modifier) {
 }
 
 private val ICONS_SIZE = 36.dp
+private val BUTTONS_BAR_HEIGHT = 72.dp

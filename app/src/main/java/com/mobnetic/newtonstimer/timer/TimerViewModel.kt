@@ -21,24 +21,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.mobnetic.newtonstimer.createAnglesArray
 import com.mobnetic.newtonstimer.timer.TimerState.Configured
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Paused
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Running
 import com.mobnetic.newtonstimer.timer.TimerState.NotConfigured
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.channels.ticker
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class TimerViewModel(application: Application) : AndroidViewModel(application) {
 
     private val hitSoundPlayer = HitSoundPlayer(application)
-    @OptIn(ObsoleteCoroutinesApi::class)
-    private val tickerChannel = ticker(delayMillis = TICK_DURATION_MILLIS, initialDelayMillis = 0)
-    private var timerJob: Job? = null
-
+    private val ticker = TimerTicker(
+        viewModelScope = viewModelScope,
+        timerStateProvider = ::state,
+        onTick = ::refreshRemainingMillis,
+        onBallHit = hitSoundPlayer::playHitSound,
+        onTimerFinished = { setNewState(NotConfigured()) }
+    )
     private var _state: TimerState by mutableStateOf(NotConfigured())
 
     var darkMode by mutableStateOf(true)
@@ -46,20 +45,21 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     val state get() = _state
 
     fun configureAngle(angle: Float) {
-        if (getAndEnsureState() is Configured) return
+        if (state is Configured) return
         setNewState(NotConfigured(angle = angle.coerceAtLeast(0f).coerceAtMost(MAX_ANGLE)))
     }
 
     fun play() {
-        if (state.durationMillis <= 0) return
-        when (val state = getAndEnsureState()) {
-            is NotConfigured -> setNewState(state.started())
-            is Paused -> setNewState(state.resumed())
+        val state = state
+        when {
+            !state.canBeStarted() -> return
+            state is NotConfigured -> setNewState(state.started())
+            state is Paused -> setNewState(state.resumed())
         }
     }
 
     fun pause() {
-        val runningState = getAndEnsureState() as? Running ?: return
+        val runningState = state as? Running ?: return
         setNewState(runningState.paused())
     }
 
@@ -68,29 +68,14 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getAnimationAngles() = when (val state = _state) {
-        is Configured -> state.swingAnimation.getAnimationAngles(state)
-        else -> FloatArray(BALLS_COUNT)
+        is Configured -> state.swingAnimation.getAnimationAngles(state, BALLS_COUNT)
+        else -> createAnglesArray(BALLS_COUNT, leftBallAngle = state.startAngle)
     }
 
     override fun onCleared() {
         super.onCleared()
-        tickerChannel.cancel()
-        hitSoundPlayer.safeRelease()
-    }
-
-    private suspend fun onTick() {
-        val state = getAndEnsureState() as? Running ?: return
-        refreshRemainingMillis()
-
-        if (state.swingAnimation.isBallHit(state, tickDuration = TICK_DURATION_MILLIS)) {
-            hitSoundPlayer.playHitSound(volume = state.remainingEnergy)
-        }
-    }
-
-    private fun newTimerJob() = viewModelScope.launch(Dispatchers.Default) {
-        for (tick in tickerChannel) {
-            onTick()
-        }
+        ticker.cancel()
+        hitSoundPlayer.release()
     }
 
     private fun refreshRemainingMillis() {
@@ -98,31 +83,14 @@ class TimerViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun setNewState(newState: TimerState) {
-        if (_state is Running && newState !is Running) {
-            timerJob?.cancel()
-        } else if (_state !is Running && newState is Running) {
-            timerJob = newTimerJob()
-        }
+        ticker.onStateChange(newState)
         _state = newState
         refreshRemainingMillis()
-    }
-
-    private fun getAndEnsureState(): TimerState {
-        val state = _state
-        if (state is Configured && state.isFinished) {
-            onTimerFinished()
-        }
-        return _state
-    }
-
-    private fun onTimerFinished() {
-        setNewState(NotConfigured())
     }
 
     companion object {
         const val MAX_ANGLE = 50f
         val MAX_DURATION_MILLIS = TimeUnit.SECONDS.toMillis(90)
-        const val BALLS_COUNT = 5
-        private const val TICK_DURATION_MILLIS = 100L
+        private const val BALLS_COUNT = 5
     }
 }

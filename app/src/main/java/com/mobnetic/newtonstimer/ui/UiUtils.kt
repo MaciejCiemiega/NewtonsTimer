@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 
-fun BoxWithConstraintsScope.isLandscape() = maxWidth > maxHeight
+val BoxWithConstraintsScope.isLandscape get() = maxWidth > maxHeight
 
 fun Activity.setSystemBarsColor(color: Color) {
     window.statusBarColor = color.toArgb()

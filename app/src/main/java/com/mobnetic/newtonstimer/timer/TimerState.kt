@@ -17,6 +17,9 @@ package com.mobnetic.newtonstimer.timer
 
 import android.os.SystemClock
 import com.mobnetic.newtonstimer.balls.SwingAnimation
+import com.mobnetic.newtonstimer.timer.TimerState.Configured.Paused
+import com.mobnetic.newtonstimer.timer.TimerState.Configured.Running
+import com.mobnetic.newtonstimer.timer.TimerState.NotConfigured
 import com.mobnetic.newtonstimer.timer.TimerViewModel.Companion.MAX_ANGLE
 import com.mobnetic.newtonstimer.timer.TimerViewModel.Companion.MAX_DURATION_MILLIS
 
@@ -30,24 +33,17 @@ sealed class TimerState(val durationMillis: Long) {
         override val elapsedMillis = 0L
 
         constructor(angle: Float) : this(durationMillis = angleToDuration(angle))
-
-        fun started() = Configured.Running(durationMillis = durationMillis)
     }
 
     sealed class Configured(durationMillis: Long) : TimerState(durationMillis) {
-
         val swingAnimation = SwingAnimation(startAngle)
         val isFinished get() = remainingMillis <= 0
-
         val remainingEnergy get() = remainingMillis / durationMillis.toFloat()
 
         class Paused(
             durationMillis: Long,
             override val elapsedMillis: Long = 0
-        ) : Configured(durationMillis) {
-
-            fun resumed() = Running(durationMillis = durationMillis, alreadyElapsedMillis = elapsedMillis)
-        }
+        ) : Configured(durationMillis)
 
         class Running(
             durationMillis: Long,
@@ -55,8 +51,6 @@ sealed class TimerState(val durationMillis: Long) {
         ) : Configured(durationMillis) {
             private val resumedAtMillis = SystemClock.uptimeMillis()
             override val elapsedMillis get() = alreadyElapsedMillis + SystemClock.uptimeMillis() - resumedAtMillis
-
-            fun paused() = Paused(durationMillis = durationMillis, elapsedMillis = elapsedMillis)
         }
     }
 
@@ -68,3 +62,8 @@ sealed class TimerState(val durationMillis: Long) {
         }
     }
 }
+
+fun TimerState.canBeStarted() = durationMillis > 0
+fun NotConfigured.started() = Running(durationMillis = durationMillis)
+fun Paused.resumed() = Running(durationMillis = durationMillis, alreadyElapsedMillis = elapsedMillis)
+fun Running.paused() = Paused(durationMillis = durationMillis, elapsedMillis = elapsedMillis)

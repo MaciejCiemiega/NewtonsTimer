@@ -97,5 +97,5 @@ private fun Density.calculateTimerFontSizeIn(constraints: Constraints): TextUnit
     }
 }
 
-private const val TIMER_FONT_SIZE_HORIZONTAL_FRACTION = 0.21f
+private const val TIMER_FONT_SIZE_HORIZONTAL_FRACTION = 0.24f
 private const val TIMER_FONT_SIZE_VERTICAL_FRACTION = 0.9f

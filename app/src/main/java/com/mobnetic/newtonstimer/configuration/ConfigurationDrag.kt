@@ -16,7 +16,6 @@
 package com.mobnetic.newtonstimer.configuration
 
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,16 +28,16 @@ import androidx.compose.ui.input.pointer.pointerInput
 import com.mobnetic.newtonstimer.atanDegree
 import com.mobnetic.newtonstimer.balls.BallSize
 
-fun Modifier.configurationDragModifier(ballSize: State<BallSize>, onAngleChanged: (Float) -> Unit, onStarted: () -> Unit) = composed {
+fun Modifier.configurationDragModifier(ballSize: BallSize, onAngleChanged: (Float) -> Unit, onDragEnd: () -> Unit) = composed {
     var draggedOffset by remember { mutableStateOf(Offset.Zero) }
     pointerInput(Unit) {
         detectDragGestures(
             onDragStart = { draggedOffset = Offset.Zero },
-            onDragEnd = { onStarted() },
+            onDragEnd = { onDragEnd() },
             onDrag = { change, dragOffsetDelta ->
                 change.consumeAllChanges()
                 draggedOffset += dragOffsetDelta
-                val angle = atanDegree(-draggedOffset.x / (ballSize.value.stringLengthToBallCenter + draggedOffset.y))
+                val angle = atanDegree(-draggedOffset.x / (ballSize.stringLengthToBallCenter + draggedOffset.y))
                 onAngleChanged(angle)
             }
         )

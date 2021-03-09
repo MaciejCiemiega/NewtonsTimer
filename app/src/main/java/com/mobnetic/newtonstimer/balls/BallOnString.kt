@@ -27,44 +27,24 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RowScope.BallOnStringWithShadow(angle: Float, modifier: Modifier = Modifier, onSizeChanged: (BallSize) -> Unit = {}) {
-    Column(modifier = modifier.weight(1f)) {
-        var ballSize by remember { mutableStateOf(BallSize()) }
-
-        val onSizeChangedModifier = Modifier.onSizeChanged {
-            ballSize = BallSize(ballRadius = it.width / 2, ballWithString = it.height)
-            onSizeChanged(ballSize)
-        }
-
-        BallOnString(
-            angle,
-            modifier = Modifier
-                .weight(1f)
-                .then(onSizeChangedModifier)
-        )
-        Shadow(angle, ballSize)
-    }
-}
-
-@Composable
-private fun BallOnString(angle: Float, modifier: Modifier) {
+fun RowScope.BallOnString(angle: Float, modifier: Modifier) {
     val swingTransformation = Modifier.graphicsLayer(
         rotationZ = angle,
         transformOrigin = BALL_ON_STRING_TRANSFORMATION_ORIGIN
     )
 
-    Column(modifier = modifier.then(swingTransformation)) {
+    Column(
+        modifier = modifier
+            .weight(1f)
+            .then(swingTransformation)
+    ) {
         String(
             modifier = Modifier
                 .weight(1f)

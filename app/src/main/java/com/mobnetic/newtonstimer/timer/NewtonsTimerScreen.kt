@@ -20,6 +20,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.mobnetic.newtonstimer.balls.SHADOW_TOP_OFFSET
 import com.mobnetic.newtonstimer.balls.SwingingBalls
 import com.mobnetic.newtonstimer.sinDegree
 import com.mobnetic.newtonstimer.timer.TimerViewModel.Companion.MAX_ANGLE
@@ -43,85 +45,92 @@ fun NewtonsTimerScreen() {
     val timerViewModel: TimerViewModel = viewModel()
 
     BoxWithConstraints {
-        if (isLandscape()) {
-            NewtonsTimerHorizontal(timerViewModel)
+        if (isLandscape) {
+            NewtonsTimerLandscape(timerViewModel)
         } else {
-            NewtonsTimerVertical(timerViewModel)
+            NewtonsTimerPortrait(timerViewModel)
         }
     }
 }
 
 @Composable
-private fun NewtonsTimerVertical(viewModel: TimerViewModel) {
-    Column(
-        modifier = Modifier
-            .animateContentSize()
-            .padding(bottom = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val isConfigured = viewModel.state is TimerState.Configured
-        val ballsInnerRatio = 0.5f
-        val ballsOuterRatio by animateFloatAsState(if (isConfigured) 1.1f * sinDegree(MAX_ANGLE) + ballsInnerRatio else sinDegree(MAX_ANGLE) + (ballsInnerRatio / 2f))
-        BoxWithConstraints(
-            modifier = Modifier.aspectRatio(ballsOuterRatio),
-            contentAlignment = Alignment.Center
+private fun NewtonsTimerPortrait(viewModel: TimerViewModel) {
+    Column {
+        Column(
+            modifier = Modifier
+                .animateContentSize()
+                .weight(0.88f)
         ) {
-            val translationX by animateFloatAsState(targetValue = if (isConfigured) 0f else constraints.maxWidth / 2f)
-            SwingingBalls(
+            val isConfigured = viewModel.state is TimerState.Configured
+            val ballsInnerRatio = BALLS_INNER_ASPECT_RATIO_PORTRAIT
+            val ballsOuterRatio by animateFloatAsState(if (isConfigured) 1.1f * sinDegree(MAX_ANGLE) + ballsInnerRatio else sinDegree(MAX_ANGLE) + (ballsInnerRatio / 2f))
+            BoxWithConstraints(
+                modifier = Modifier.aspectRatio(ballsOuterRatio),
+                contentAlignment = Alignment.Center
+            ) {
+                val translationX by animateFloatAsState(targetValue = if (isConfigured) 0f else constraints.maxWidth / 2f)
+                SwingingBalls(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .aspectRatio(ballsInnerRatio)
+                        .graphicsLayer(translationX = translationX)
+                )
+            }
+            Display(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .aspectRatio(ballsInnerRatio)
-                    .graphicsLayer(translationX = translationX)
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
             )
         }
-        Display(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-        )
         ButtonsBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         )
+        Spacer(
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+                .weight(0.1f)
+        )
     }
 }
 
 @Composable
-private fun NewtonsTimerHorizontal(viewModel: TimerViewModel) {
+private fun NewtonsTimerLandscape(viewModel: TimerViewModel) {
     Row {
         Column(
             modifier = Modifier
                 .animateContentSize()
-                .weight(1f)
-                .padding(horizontal = 16.dp, vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .weight(1.5f)
+                .padding(horizontal = 16.dp, vertical = 24.dp)
         ) {
             Display(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
             )
+            Spacer(modifier = Modifier.weight(1f))
             ButtonsBar(modifier = Modifier.fillMaxWidth())
         }
 
         val isConfigured = viewModel.state is TimerState.Configured
-        val ballsInnerRatio = 0.55f
-        val ballsOuterRatio = sinDegree(MAX_ANGLE) + (ballsInnerRatio / 2f)
         BoxWithConstraints(
             modifier = Modifier
                 .weight(1f)
-                .aspectRatio(ballsOuterRatio),
+                .padding(bottom = SHADOW_TOP_OFFSET + 24.dp),
             contentAlignment = Alignment.Center
         ) {
             val translationX by animateFloatAsState(targetValue = if (isConfigured) 0f else constraints.maxWidth / 2f)
             SwingingBalls(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .aspectRatio(ballsInnerRatio)
+                    .aspectRatio(BALLS_INNER_ASPECT_RATIO_LANDSCAPE)
                     .graphicsLayer(translationX = translationX)
             )
         }
     }
 }
+
+private const val BALLS_INNER_ASPECT_RATIO_PORTRAIT = 0.5f
+private const val BALLS_INNER_ASPECT_RATIO_LANDSCAPE = 0.55f

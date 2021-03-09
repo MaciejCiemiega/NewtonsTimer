@@ -17,9 +17,9 @@ package com.mobnetic.newtonstimer.balls
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -35,11 +35,12 @@ import com.mobnetic.newtonstimer.ui.theme.Colors
 import kotlin.math.abs
 
 @Composable
-fun Shadow(angle: Float, ballSize: BallSize) {
+fun RowScope.Shadow(angle: Float, ballSize: BallSize, modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
+            .weight(1f)
             .fillMaxWidth()
-            .height(0.dp)
+            .aspectRatio(SHADOW_ASPECT_RATIO)
             .shadowTransformation(angle, ballSize)
     ) { ShadowGradientCircle() }
 }
@@ -73,8 +74,8 @@ private fun Modifier.shadowTransformation(angle: Float, ballSize: BallSize) = co
     )
 }
 
-private const val SHADOW_ASPECT_RATIO = 5f
+const val SHADOW_ASPECT_RATIO = 5f // TODO
 private const val SHADOW_GRADIENT_UPSCALE = 1.25f
 private const val SHADOW_GRADIENT_SOLID_COLOR_STOP = 0.7f
-private val SHADOW_TOP_OFFSET = 32.dp
+val SHADOW_TOP_OFFSET = 32.dp
 private const val SHADOW_MIN_SCALE = 0.15f
