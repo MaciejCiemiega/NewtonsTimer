@@ -1,4 +1,4 @@
-# Put title of your app here
+# Newton's Timer
 
 ![Workflow result](https://github.com/MaciejCiemiega/NewtonsTimer/workflows/Check/badge.svg)
 
