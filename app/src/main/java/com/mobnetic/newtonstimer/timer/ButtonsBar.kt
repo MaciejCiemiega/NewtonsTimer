@@ -43,12 +43,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mobnetic.newtonstimer.R
+import com.mobnetic.newtonstimer.TestTags
 
 @Composable
-fun ButtonsBar(viewModel: TimerViewModel, modifier: Modifier = Modifier) {
+fun ButtonsBar(viewModel: TimerViewModel, state: TimerState, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.height(BUTTONS_BAR_HEIGHT),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -61,9 +63,9 @@ fun ButtonsBar(viewModel: TimerViewModel, modifier: Modifier = Modifier) {
         )
 
         val playPauseButtonSize = Modifier.size(BUTTONS_BAR_HEIGHT)
-        if (viewModel.state is TimerState.Configured) {
+        if (state is TimerState.Configured) {
             PlayPauseButton(
-                isRunning = viewModel.state is TimerState.Configured.Running,
+                isRunning = state is TimerState.Configured.Running,
                 pause = viewModel::pause,
                 play = viewModel::play,
                 modifier = playPauseButtonSize
@@ -72,7 +74,7 @@ fun ButtonsBar(viewModel: TimerViewModel, modifier: Modifier = Modifier) {
             Spacer(playPauseButtonSize)
         }
 
-        if (viewModel.state is TimerState.Configured.Paused) {
+        if (state is TimerState.Configured.Paused) {
             ResetButton(onReset = viewModel::reset, Modifier.weight(1f))
         } else {
             Spacer(Modifier.weight(1f))
@@ -86,7 +88,7 @@ private fun DarkModeToggleButton(
     onDarkModeChanged: (Boolean) -> Unit,
     modifier: Modifier
 ) {
-    IconButton(onClick = { onDarkModeChanged(!darkMode) }, modifier) {
+    IconButton(onClick = { onDarkModeChanged(!darkMode) }, modifier.testTag(TestTags.darkModeToggleButton)) {
         val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
         val iconModifier = Modifier.size(ICONS_SIZE)
         when (darkMode) {
@@ -106,7 +108,7 @@ private fun PlayPauseButton(
     val color by animateColorAsState(MaterialTheme.colors.primary)
     OutlinedButton(
         onClick = { if (isRunning) pause() else play() },
-        modifier = modifier.aspectRatio(1f),
+        modifier = modifier.aspectRatio(1f).testTag(TestTags.pauseButton),
         shape = CircleShape,
         border = BorderStroke(1.dp, color),
         colors = ButtonDefaults.outlinedButtonColors(
@@ -127,7 +129,7 @@ private fun PlayPauseButton(
 
 @Composable
 private fun ResetButton(onReset: () -> Unit, modifier: Modifier) {
-    IconButton(onClick = onReset, modifier) {
+    IconButton(onClick = onReset, modifier.testTag(TestTags.resetButton)) {
         val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
         val iconModifier = Modifier.size(ICONS_SIZE)
         Icon(Icons.Default.Close, stringResource(R.string.reset), iconModifier, color)

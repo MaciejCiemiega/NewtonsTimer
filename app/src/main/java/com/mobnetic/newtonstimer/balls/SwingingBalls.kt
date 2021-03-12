@@ -33,6 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
+import com.mobnetic.newtonstimer.TestTags
 import com.mobnetic.newtonstimer.configuration.ConfigurationHint
 import com.mobnetic.newtonstimer.configuration.configurationDragModifier
 import com.mobnetic.newtonstimer.timer.TimerState
@@ -102,7 +104,7 @@ private fun BallsOnStrings(
     Row(Modifier.fillMaxSize()) {
         val draggable = if (!isConfigured) Modifier.configurationDragModifier(ballSize, onConfigurationAngleChanged, onDragEnd) else Modifier
 
-        BallOnString(angles.first(), draggable)
+        BallOnString(angles.first(), draggable.testTag(TestTags.draggableBall))
         angles.forOtherAngles { angle ->
             BallOnString(angle, Modifier.alpha(otherBallsAlpha))
         }
