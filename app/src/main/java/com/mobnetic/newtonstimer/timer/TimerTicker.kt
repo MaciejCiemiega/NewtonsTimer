@@ -74,7 +74,7 @@ class TimerTicker(
         tickerChannel.cancel()
     }
 
-    private companion object {
-        private const val TICK_DURATION_MILLIS = 100L
+    companion object {
+        var TICK_DURATION_MILLIS = 100L
     }
 }

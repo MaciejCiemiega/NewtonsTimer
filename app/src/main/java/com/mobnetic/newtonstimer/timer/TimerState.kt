@@ -15,7 +15,6 @@
  */
 package com.mobnetic.newtonstimer.timer
 
-import android.os.SystemClock
 import com.mobnetic.newtonstimer.balls.SwingAnimation
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Paused
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Running
@@ -48,8 +47,8 @@ sealed class TimerState(val durationMillis: Long) {
             durationMillis: Long,
             private val alreadyElapsedMillis: Long = 0
         ) : Configured(durationMillis) {
-            private val resumedAtMillis = SystemClock.uptimeMillis()
-            override val elapsedMillis get() = alreadyElapsedMillis + SystemClock.uptimeMillis() - resumedAtMillis
+            private val resumedAtMillis = Clock.now()
+            override val elapsedMillis get() = alreadyElapsedMillis + Clock.now() - resumedAtMillis
         }
     }
 

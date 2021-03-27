@@ -11,7 +11,8 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mobnetic.newtonstimer">
+    package="com.mobnetic.newtonstimer"
+    android:sharedUserId="com.mobnetic.newtonstimer.uid">
 
     <application
         android:allowBackup="true"
