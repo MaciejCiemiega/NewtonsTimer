@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Newton\'s Timer</string>
+    <string name="play_a11y">Play</string>
+    <string name="pause_a11y">Pause</string>
+    <string name="reset_a11y">Reset</string>
+    <string name="light_mode_a11y">Switch to light mode</string>
+    <string name="dark_mode_a11y">Switch to dark mode</string>
+</resources>
