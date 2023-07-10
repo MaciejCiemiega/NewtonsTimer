@@ -21,7 +21,6 @@ actual class AudioPlayer {
         player?.setVolume(volume)
     }
 
-    private var firstTime = true
     actual fun start() {
         player?.apply {
             pause()
