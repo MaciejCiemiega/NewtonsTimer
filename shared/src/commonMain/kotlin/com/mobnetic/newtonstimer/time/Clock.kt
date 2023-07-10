@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mobnetic.newtonstimer.timer
+package com.mobnetic.newtonstimer.time
 
 object Clock {
 
-    var fakeNow: Long? = null
-
-    fun now(): Long = fakeNow ?: kotlinx.datetime.Clock.System.now().toEpochMilliseconds()
+    fun now(): Long = kotlinx.datetime.Clock.System.now().toEpochMilliseconds()
 }

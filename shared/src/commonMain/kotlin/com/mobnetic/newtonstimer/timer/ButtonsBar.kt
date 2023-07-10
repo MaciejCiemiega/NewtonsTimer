@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:Suppress("PrivatePropertyName")
+
 package com.mobnetic.newtonstimer.timer
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ButtonDefaults
@@ -50,7 +50,12 @@ import com.mobnetic.newtonstimer.TestTags
 import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
-fun ButtonsBar(viewModel: TimerViewModel, state: TimerState, modifier: Modifier = Modifier) {
+fun ButtonsBar(
+    viewModel: TimerViewModel,
+    modifier: Modifier = Modifier
+) {
+    val state = viewModel.state
+
     Row(
         modifier = modifier.height(BUTTONS_BAR_HEIGHT),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -62,22 +67,25 @@ fun ButtonsBar(viewModel: TimerViewModel, state: TimerState, modifier: Modifier 
             modifier = Modifier.weight(1f)
         )
 
-        val playPauseButtonSize = Modifier.size(BUTTONS_BAR_HEIGHT)
-        if (state is TimerState.Configured) {
-            PlayPauseButton(
-                isRunning = state is TimerState.Configured.Running,
-                pause = viewModel::pause,
-                play = viewModel::play,
-                modifier = playPauseButtonSize
-            )
-        } else {
-            Spacer(playPauseButtonSize)
+        Box(
+            modifier = Modifier.size(BUTTONS_BAR_HEIGHT)
+        ) {
+            if (state is TimerState.Configured) {
+                PlayPauseButton(
+                    isRunning = state is TimerState.Configured.Running,
+                    pause = viewModel::pause,
+                    play = viewModel::play,
+                )
+            }
         }
 
-        if (state is TimerState.Configured.Paused) {
-            ResetButton(onReset = viewModel::reset, Modifier.weight(1f))
-        } else {
-            Spacer(Modifier.weight(1f))
+        Box(
+            modifier = Modifier.weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            if (state is TimerState.Configured.Paused) {
+                ResetButton(onReset = viewModel::reset)
+            }
         }
     }
 }
@@ -86,27 +94,26 @@ fun ButtonsBar(viewModel: TimerViewModel, state: TimerState, modifier: Modifier 
 private fun DarkModeToggleButton(
     darkMode: Boolean,
     onDarkModeChanged: (Boolean) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     IconButton(
         onClick = { onDarkModeChanged(!darkMode) },
         modifier.testTag(TestTags.darkModeToggleButton)
     ) {
         val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
-        val iconModifier = Modifier.size(ICONS_SIZE)
-        when (darkMode) {
-            true -> Icon(
-                Icons.Default.LightMode,
-                stringResource(MR.strings.light_mode_a11y),
-                iconModifier,
-                color
+        if (darkMode) {
+            Icon(
+                imageVector = Icons.Default.LightMode,
+                contentDescription = stringResource(MR.strings.light_mode_a11y),
+                modifier = Modifier.size(ICONS_SIZE),
+                tint = color
             )
-
-            else -> Icon(
-                Icons.Default.DarkMode,
-                stringResource(MR.strings.dark_mode_a11y),
-                iconModifier,
-                color
+        } else {
+            Icon(
+                imageVector = Icons.Default.DarkMode,
+                contentDescription = stringResource(MR.strings.dark_mode_a11y),
+                modifier = Modifier.size(ICONS_SIZE),
+                tint = color
             )
         }
     }
@@ -117,12 +124,13 @@ private fun PlayPauseButton(
     isRunning: Boolean,
     pause: () -> Unit,
     play: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val color by animateColorAsState(MaterialTheme.colors.primary)
     OutlinedButton(
         onClick = { if (isRunning) pause() else play() },
-        modifier = modifier.aspectRatio(1f).testTag(TestTags.pauseButton),
+        modifier = modifier.aspectRatio(1f)
+            .testTag(TestTags.pauseButton),
         shape = CircleShape,
         border = BorderStroke(1.dp, color),
         colors = ButtonDefaults.outlinedButtonColors(
@@ -131,38 +139,40 @@ private fun PlayPauseButton(
         ),
         contentPadding = PaddingValues()
     ) {
-        val iconModifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()
-        when (isRunning) {
-            true -> Icon(
-                Icons.Default.Pause,
-                stringResource(MR.strings.pause_a11y),
-                iconModifier
+        if (isRunning) {
+            Icon(
+                imageVector = Icons.Default.Pause,
+                contentDescription = stringResource(MR.strings.pause_a11y),
+                modifier = Modifier.size(ICONS_SIZE)
             )
-
-            else -> Icon(
-                Icons.Default.PlayArrow,
-                stringResource(MR.strings.play_a11y),
-                iconModifier
+        } else {
+            Icon(
+                imageVector = Icons.Default.PlayArrow,
+                contentDescription = stringResource(MR.strings.play_a11y),
+                modifier = Modifier.size(ICONS_SIZE)
             )
         }
     }
 }
 
 @Composable
-private fun ResetButton(onReset: () -> Unit, modifier: Modifier) {
-    IconButton(onClick = onReset, modifier.testTag(TestTags.resetButton)) {
+private fun ResetButton(
+    onReset: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    IconButton(
+        onClick = onReset,
+        modifier = modifier.testTag(TestTags.resetButton)
+    ) {
         val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
-        val iconModifier = Modifier.size(ICONS_SIZE)
         Icon(
-            Icons.Default.Close,
-            stringResource(MR.strings.reset_a11y),
-            iconModifier,
-            color
+            imageVector = Icons.Default.Close,
+            contentDescription = stringResource(MR.strings.reset_a11y),
+            modifier = Modifier.size(ICONS_SIZE),
+            tint = color
         )
     }
 }
 
-private val ICONS_SIZE = 36.dp
 private val BUTTONS_BAR_HEIGHT = 72.dp
+private val ICONS_SIZE = 36.dp

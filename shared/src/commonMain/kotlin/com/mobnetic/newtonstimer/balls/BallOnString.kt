@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:Suppress("PrivatePropertyName")
+
 package com.mobnetic.newtonstimer.balls
 
 import androidx.compose.animation.animateColorAsState
@@ -59,7 +61,7 @@ private fun String(modifier: Modifier) {
     val stringColor by animateColorAsState(MaterialTheme.colors.onBackground.copy(alpha = 0.5f))
     Box(
         modifier = modifier
-            .width(STRING_THICKNESS_DP)
+            .width(STRING_THICKNESS)
             .background(stringColor)
     )
 }
@@ -72,10 +74,10 @@ private fun Ball() {
         modifier = Modifier
             .aspectRatio(1f)
             .background(ballColor, shape = CircleShape)
-            .border(BORDER_THICKNESS_DP, borderColor, CircleShape)
+            .border(BORDER_THICKNESS, borderColor, CircleShape)
     )
 }
 
 private val BALL_ON_STRING_TRANSFORMATION_ORIGIN = TransformOrigin(0.5f, 0f)
-private val STRING_THICKNESS_DP = 1.dp
-private val BORDER_THICKNESS_DP = 1.dp
+private val STRING_THICKNESS = 1.dp
+private val BORDER_THICKNESS = 1.dp

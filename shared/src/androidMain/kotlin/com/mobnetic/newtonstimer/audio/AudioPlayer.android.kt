@@ -1,4 +1,4 @@
-package com.mobnetic.newtonstimer.timer
+package com.mobnetic.newtonstimer.audio
 
 import android.app.Application
 import android.media.MediaPlayer

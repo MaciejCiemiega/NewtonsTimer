@@ -19,7 +19,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.mobnetic.newtonstimer.audio.HitSoundPlayer
 import com.mobnetic.newtonstimer.setupAngles
+import com.mobnetic.newtonstimer.time.TimerTicker
 import com.mobnetic.newtonstimer.timer.TimerState.Configured
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Paused
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Running

@@ -16,6 +16,7 @@
 package com.mobnetic.newtonstimer.timer
 
 import com.mobnetic.newtonstimer.balls.SwingAnimation
+import com.mobnetic.newtonstimer.time.Clock
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Paused
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Running
 import com.mobnetic.newtonstimer.timer.TimerState.NotConfigured

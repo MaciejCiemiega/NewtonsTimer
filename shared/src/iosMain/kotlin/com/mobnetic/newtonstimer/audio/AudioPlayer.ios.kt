@@ -1,4 +1,4 @@
-package com.mobnetic.newtonstimer.timer
+package com.mobnetic.newtonstimer.audio
 
 import dev.icerock.moko.resources.AssetResource
 import platform.AVFoundation.AVPlayer

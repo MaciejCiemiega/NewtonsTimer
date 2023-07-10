@@ -78,7 +78,6 @@ private fun NewtonsTimerPortrait(viewModel: TimerViewModel) {
         }
         ButtonsBar(
             viewModel = viewModel,
-            state = viewModel.state,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
@@ -110,7 +109,6 @@ private fun NewtonsTimerLandscape(viewModel: TimerViewModel) {
             Spacer(modifier = Modifier.weight(1f))
             ButtonsBar(
                 viewModel = viewModel,
-                state = viewModel.state,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.weight(0.3f))

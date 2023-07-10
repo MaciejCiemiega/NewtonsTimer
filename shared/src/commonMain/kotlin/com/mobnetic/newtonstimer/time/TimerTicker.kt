@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mobnetic.newtonstimer.timer
+package com.mobnetic.newtonstimer.time
 
-//import kotlinx.coroutines.channels.ticker
 import com.mobnetic.newtonstimer.tickerFlow
+import com.mobnetic.newtonstimer.timer.TimerState
 import com.mobnetic.newtonstimer.timer.TimerState.Configured.Running
+import com.mobnetic.newtonstimer.timer.absoluteRemainingEnergy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn

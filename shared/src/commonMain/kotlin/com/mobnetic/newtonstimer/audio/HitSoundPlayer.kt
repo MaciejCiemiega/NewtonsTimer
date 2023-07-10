@@ -1,4 +1,4 @@
-package com.mobnetic.newtonstimer.timer
+package com.mobnetic.newtonstimer.audio
 
 import com.mobnetic.newtonstimer.MR
 import org.koin.core.component.KoinComponent
