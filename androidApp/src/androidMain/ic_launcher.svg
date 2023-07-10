@@ -19,23 +19,23 @@
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <sodipodi:namedview
      id="namedview141"
-     pagecolor="#073042"
+     pagecolor="#ffffff"
      bordercolor="#000000"
      borderopacity="0.25"
      inkscape:showpageshadow="2"
-     inkscape:pageopacity="1"
+     inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="0.4609375"
-     inkscape:cx="257.08475"
-     inkscape:cy="256"
+     inkscape:zoom="0.80727773"
+     inkscape:cx="278.09512"
+     inkscape:cy="298.53419"
      inkscape:window-width="1512"
      inkscape:window-height="916"
      inkscape:window-x="0"
-     inkscape:window-y="38"
+     inkscape:window-y="689"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs2" />
   <metadata
@@ -51,27 +51,34 @@
   </metadata>
   <g
      id="layer1">
+    <rect
+       style="opacity:1;fill:#073042;stroke-width:0.1;stroke-miterlimit:3;paint-order:stroke markers fill;fill-opacity:1"
+       id="rect485"
+       width="135.46666"
+       height="135.46666"
+       x="0"
+       y="0" />
     <g
        id="g1023-0-4"
        transform="matrix(1.00287,-0.17373857,0.17373857,1.00287,14.612911,21.9758)">
       <rect
-         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.09296;stroke-miterlimit:4;stroke-dasharray:8.37185, 8.37185;stroke-dashoffset:0;stroke-opacity:1"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.33346;stroke-miterlimit:4;stroke-dasharray:9.33386, 9.33386;stroke-dashoffset:0;stroke-opacity:1"
          id="rect1455"
-         width="5.1990786"
-         height="148.17365"
-         x="49.591461"
-         y="-122.97338"
+         width="5.7965059"
+         height="165.20032"
+         x="49.292751"
+         y="-142.27029"
          transform="rotate(9.8284488)" />
       <circle
-         style="fill:#3ddc84;fill-opacity:1;stroke:none;stroke-width:0.190263"
+         style="fill:#3ddc84;fill-opacity:1;stroke:none;stroke-width:0.212126"
          id="path837-9-7"
          cx="43.750912"
-         cy="53.206055"
-         r="29.84466" />
+         cy="53.206051"
+         r="33.274117" />
     </g>
     <g
        id="g1023-0-4-6"
-       transform="matrix(1.00287,-0.17373857,0.17373857,1.00287,74.673274,19.619199)">
+       transform="matrix(1.1181101,-0.19370291,0.19370291,1.1181101,76.24216,14.090385)">
       <circle
          style="fill:#3ddc84;fill-opacity:1;stroke:none;stroke-width:0.190263"
          id="path837-9-7-2"

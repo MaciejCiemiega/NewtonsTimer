@@ -9,16 +9,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.luminance
 import com.mobnetic.newtonstimer.timer.NewtonsTimerScreen
 import com.mobnetic.newtonstimer.timer.TimerViewModel
-import com.mobnetic.newtonstimer.ui.setSystemBarsColor
-import com.mobnetic.newtonstimer.ui.theme.Colors
+import com.mobnetic.newtonstimer.ui.SystemBarsContentColor
 import com.mobnetic.newtonstimer.ui.theme.MyTheme
 
 @Composable
 fun App(timerViewModel: TimerViewModel = remember { TimerViewModel() }) {
     MyTheme(darkMode = timerViewModel.darkMode) {
         val backgroundColor by animateColorAsState(MaterialTheme.colors.background)
+
         val isLightStatusBarContent = backgroundColor.luminance() < 0.5
-        setSystemBarsColor(isLightStatusBarContent)
+        SystemBarsContentColor(isLightStatusBarContent)
 
         Surface(color = backgroundColor) {
             NewtonsTimerScreen(timerViewModel)

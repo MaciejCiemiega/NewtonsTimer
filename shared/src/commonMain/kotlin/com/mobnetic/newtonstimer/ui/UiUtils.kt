@@ -17,9 +17,8 @@ package com.mobnetic.newtonstimer.ui
 
 import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
 val BoxWithConstraintsScope.isLandscape get() = maxWidth > maxHeight
 
 @Composable
-expect fun setSystemBarsColor(isLightSystemBarsContent: Boolean)
+expect fun SystemBarsContentColor(isLightSystemBarsContent: Boolean)
