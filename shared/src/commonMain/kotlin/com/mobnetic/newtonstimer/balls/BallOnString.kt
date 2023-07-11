@@ -36,7 +36,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RowScope.BallOnString(angle: Float, modifier: Modifier = Modifier) {
+fun RowScope.BallOnString(
+    angle: Float,
+    modifier: Modifier = Modifier,
+) {
     val swingTransformation = Modifier.graphicsLayer(
         rotationZ = angle,
         transformOrigin = BALL_ON_STRING_TRANSFORMATION_ORIGIN

@@ -41,15 +41,18 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.unit.dp
 import com.mobnetic.newtonstimer.balls.BallSize
-import com.mobnetic.newtonstimer.timer.TimerViewModel
+import com.mobnetic.newtonstimer.timer.NewtonsTimerViewModel
 
 @Composable
-fun ConfigurationHint(configuredAngle: Float, ballSize: BallSize) {
+fun ConfigurationHint(
+    configuredAngle: Float,
+    ballSize: BallSize,
+) {
     val color by animateColorAsState(MaterialTheme.colors.onBackground)
     val animateStartAngle by animatedHintArcStartAngle()
     Box(
         Modifier.drawBehind {
-            drawHintArc(ballSize, sweepAngle = TimerViewModel.MAX_ANGLE, color, alpha = 0.3f)
+            drawHintArc(ballSize, sweepAngle = NewtonsTimerViewModel.MAX_ANGLE, color, alpha = 0.3f)
 
             if (configuredAngle > 0f) {
                 drawHintArc(ballSize, sweepAngle = configuredAngle, color)
@@ -60,7 +63,12 @@ fun ConfigurationHint(configuredAngle: Float, ballSize: BallSize) {
     )
 }
 
-private fun DrawScope.drawHintArc(ballSize: BallSize, sweepAngle: Float, color: Color, alpha: Float = 1f) {
+private fun DrawScope.drawHintArc(
+    ballSize: BallSize,
+    sweepAngle: Float,
+    color: Color,
+    alpha: Float = 1f,
+) {
     val dashInterval = ARC_STROKE_DASH_INTERVAL.toPx()
     drawArc(
         color = color,
@@ -77,9 +85,13 @@ private fun DrawScope.drawHintArc(ballSize: BallSize, sweepAngle: Float, color: 
     )
 }
 
-private fun DrawScope.drawAnimatedHintArc(ballSize: BallSize, animatedHintStartAngle: Float, color: Color) {
+private fun DrawScope.drawAnimatedHintArc(
+    ballSize: BallSize,
+    animatedHintStartAngle: Float,
+    color: Color,
+) {
     clipPath(animatedHintClipPath(ballSize, animatedStartAngle = animatedHintStartAngle)) {
-        drawHintArc(ballSize, sweepAngle = TimerViewModel.MAX_ANGLE, color)
+        drawHintArc(ballSize, sweepAngle = NewtonsTimerViewModel.MAX_ANGLE, color)
     }
 }
 
@@ -88,7 +100,7 @@ private fun animatedHintArcStartAngle(): State<Float> {
     val transition = rememberInfiniteTransition()
     return transition.animateFloat(
         initialValue = 90f - ARC_ANIMATED_HINT_SWEEP_ANGLE_DEGREES,
-        targetValue = 90f + TimerViewModel.MAX_ANGLE,
+        targetValue = 90f + NewtonsTimerViewModel.MAX_ANGLE,
         animationSpec = infiniteRepeatable(
             animation = tween(
                 durationMillis = ARC_ANIMATED_HINT_ANIM_DURATION,
@@ -99,7 +111,10 @@ private fun animatedHintArcStartAngle(): State<Float> {
     )
 }
 
-private fun DrawScope.animatedHintClipPath(ballSize: BallSize, animatedStartAngle: Float) = Path().apply {
+private fun DrawScope.animatedHintClipPath(
+    ballSize: BallSize,
+    animatedStartAngle: Float,
+) = Path().apply {
     moveTo(0f, 0f)
     arcTo(
         rect = ballSize.arcRect(additionalRadius = ARC_STROKE_WIDTH.toPx()),
@@ -119,7 +134,8 @@ private fun BallSize.arcSize(additionalRadius: Float = 0f): Size {
     return Size(width = radius, height = radius).times(2f)
 }
 
-private fun BallSize.arcRect(additionalRadius: Float = 0f) = Rect(arcOffset(additionalRadius), arcSize(additionalRadius))
+private fun BallSize.arcRect(additionalRadius: Float = 0f) =
+    Rect(arcOffset(additionalRadius), arcSize(additionalRadius))
 
 private val ARC_STROKE_WIDTH = 2.dp
 private val ARC_STROKE_DASH_INTERVAL = ARC_STROKE_WIDTH * 4

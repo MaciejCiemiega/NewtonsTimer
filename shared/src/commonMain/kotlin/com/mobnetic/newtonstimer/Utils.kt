@@ -33,7 +33,7 @@ fun atanDegree(x: Float): Float = toDegrees(atan(x).toDouble()).toFloat()
 fun SnapshotStateList<Float>.setupAngles(
     firstBallAngle: Float = 0f,
     middleBallsAngle: (index: Int) -> Float = { 0f },
-    lastBallAngle: Float = 0f
+    lastBallAngle: Float = 0f,
 ) = apply {
     indices.forEach { index ->
         this[index] = when (index) {

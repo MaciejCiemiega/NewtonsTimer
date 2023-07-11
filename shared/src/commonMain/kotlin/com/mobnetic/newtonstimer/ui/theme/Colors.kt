@@ -27,8 +27,6 @@ internal object Colors {
 
     private val ballShadowColorDark = Color.Black.copy(alpha = 0.3f)
     private val ballShadowColorLight = Color.Black.copy(alpha = 0.1f)
-    val systemBarsScrimLight = Color(0x30FFFFFF)
-    val systemBarsScrimDark = Color(0x30000000)
 
     val ballShadow @Composable get() = if (MaterialTheme.colors.isLight) ballShadowColorLight else ballShadowColorDark
 }

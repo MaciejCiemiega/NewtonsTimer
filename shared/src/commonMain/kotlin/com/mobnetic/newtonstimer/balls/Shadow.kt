@@ -30,12 +30,16 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.mobnetic.newtonstimer.sinDegree
-import com.mobnetic.newtonstimer.timer.TimerViewModel.Companion.MAX_ANGLE
+import com.mobnetic.newtonstimer.timer.NewtonsTimerViewModel.Companion.MAX_ANGLE
 import com.mobnetic.newtonstimer.ui.theme.Colors
 import kotlin.math.abs
 
 @Composable
-fun RowScope.Shadow(angle: Float, ballSize: BallSize, alpha: Float = 1f) {
+fun RowScope.Shadow(
+    angle: Float,
+    ballSize: BallSize,
+    alpha: Float = 1f,
+) {
     Box(
         modifier = Modifier
             .weight(1f)
@@ -66,7 +70,8 @@ private fun createShadowGradient(shadowColor: Color) = Brush.radialGradient(
 
 private fun Modifier.shadowTransformation(angle: Float, ballSize: BallSize) = composed {
     val translationX = -sinDegree(angle) * ballSize.stringLengthToBallCenter
-    val distanceFromGroundMultiplier = (1 - ((abs(angle) / MAX_ANGLE) * (1 - SHADOW_MIN_SCALE))).coerceIn(SHADOW_MIN_SCALE, 1f)
+    val distanceFromGroundMultiplier =
+        (1 - ((abs(angle) / MAX_ANGLE) * (1 - SHADOW_MIN_SCALE))).coerceIn(SHADOW_MIN_SCALE, 1f)
 
     Modifier.graphicsLayer(
         scaleX = SHADOW_GRADIENT_UPSCALE * distanceFromGroundMultiplier,

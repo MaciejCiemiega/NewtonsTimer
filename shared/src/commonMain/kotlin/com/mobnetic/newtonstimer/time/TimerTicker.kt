@@ -30,7 +30,7 @@ class TimerTicker(
     private val timerStateProvider: () -> TimerState,
     private val onTick: () -> Unit,
     private val onBallHit: (volume: Float) -> Unit,
-    private val onTimerFinished: () -> Unit
+    private val onTimerFinished: () -> Unit,
 ) {
     private val ticker = tickerFlow(period = TICK_DURATION_MILLIS)
     private var timerJob: Job? = null

@@ -30,7 +30,7 @@ import com.mobnetic.newtonstimer.balls.BallSize
 fun Modifier.configurationDragModifier(
     ballSize: BallSize,
     onConfigurationAngleChanged: (Float) -> Unit,
-    onDragEnd: () -> Unit
+    onDragEnd: () -> Unit,
 ) = composed {
     var draggedOffset by remember { mutableStateOf(Offset.Zero) }
     pointerInput(Unit) {

@@ -15,6 +15,7 @@
  */
 package com.mobnetic.newtonstimer.balls
 
+import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -34,21 +35,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.testTag
-import com.mobnetic.newtonstimer.TestTags
 import com.mobnetic.newtonstimer.configuration.ConfigurationHint
 import com.mobnetic.newtonstimer.configuration.configurationDragModifier
+import com.mobnetic.newtonstimer.timer.NewtonsTimerViewModel
 import com.mobnetic.newtonstimer.timer.TimerState
-import com.mobnetic.newtonstimer.timer.TimerViewModel
 import kotlinx.coroutines.isActive
 
 @Composable
-fun SwingingBallsContainer(viewModel: TimerViewModel, ballsInnerRatio: Float, modifier: Modifier) {
+fun SwingingBallsContainer(
+    viewModel: NewtonsTimerViewModel,
+    ballsInnerRatio: Float,
+    configurationTransitionAnimSpec: FiniteAnimationSpec<Float>,
+    modifier: Modifier = Modifier,
+) {
     BoxWithConstraints(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        val translationX by animateFloatAsState(targetValue = if (viewModel.isConfigured) 0f else constraints.maxWidth / 2f)
+        val translationX by animateFloatAsState(
+            targetValue = if (viewModel.isConfigured) 0f else constraints.maxWidth / 2f,
+            animationSpec = configurationTransitionAnimSpec
+        )
         SwingingBalls(
             viewModel,
             modifier = Modifier
@@ -60,7 +67,10 @@ fun SwingingBallsContainer(viewModel: TimerViewModel, ballsInnerRatio: Float, mo
 }
 
 @Composable
-private fun SwingingBalls(viewModel: TimerViewModel, modifier: Modifier) {
+private fun SwingingBalls(
+    viewModel: NewtonsTimerViewModel,
+    modifier: Modifier,
+) {
     Column(modifier) {
         val angles = animateAnglesAsState(viewModel)
 
@@ -99,7 +109,7 @@ private fun BallsOnStrings(
     ballSize: BallSize,
     otherBallsAlpha: Float,
     onConfigurationAngleChanged: (Float) -> Unit,
-    onDragEnd: () -> Unit
+    onDragEnd: () -> Unit,
 ) {
     Row(Modifier.fillMaxSize()) {
         val draggable = if (!isConfigured) Modifier.configurationDragModifier(
@@ -108,7 +118,7 @@ private fun BallsOnStrings(
             onDragEnd
         ) else Modifier
 
-        BallOnString(angles.first(), draggable.testTag(TestTags.draggableBall))
+        BallOnString(angle = angles.first(), modifier = draggable)
         angles.forOtherAngles { angle ->
             BallOnString(angle, Modifier.alpha(otherBallsAlpha))
         }
@@ -116,7 +126,11 @@ private fun BallsOnStrings(
 }
 
 @Composable
-private fun Shadows(angles: List<Float>, ballSize: BallSize, otherBallsAlpha: Float) {
+private fun Shadows(
+    angles: List<Float>,
+    ballSize: BallSize,
+    otherBallsAlpha: Float,
+) {
     Row(Modifier.fillMaxWidth()) {
         Shadow(angles.first(), ballSize)
         angles.forOtherAngles { angle ->
@@ -126,7 +140,7 @@ private fun Shadows(angles: List<Float>, ballSize: BallSize, otherBallsAlpha: Fl
 }
 
 @Composable
-private fun animateAnglesAsState(viewModel: TimerViewModel): List<Float> {
+private fun animateAnglesAsState(viewModel: NewtonsTimerViewModel): List<Float> {
     val angles by remember { mutableStateOf(viewModel.angles) }
 
     val state = viewModel.state

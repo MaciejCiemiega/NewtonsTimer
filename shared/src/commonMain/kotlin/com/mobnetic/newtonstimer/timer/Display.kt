@@ -28,18 +28,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.TextUnit
+import com.mobnetic.newtonstimer.MR
 import com.mobnetic.newtonstimer.formatMinTwoDigits
+import dev.icerock.moko.resources.compose.fontFamilyResource
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
-fun Display(viewModel: TimerViewModel, modifier: Modifier = Modifier) {
+fun Display(
+    viewModel: NewtonsTimerViewModel,
+    modifier: Modifier = Modifier,
+) {
     BoxWithConstraints(modifier, Alignment.Center) {
         val digitsColor by animateColorAsState(MaterialTheme.colors.primaryVariant)
         val separatorsColor by animateColorAsState(MaterialTheme.colors.onBackground)
@@ -53,7 +57,7 @@ fun Display(viewModel: TimerViewModel, modifier: Modifier = Modifier) {
                 fontSize
             ),
             color = digitsColor,
-            fontWeight = FontWeight.Thin,
+            fontFamily = fontFamilyResource(MR.fonts.Roboto.thin),
             fontSize = fontSize,
             textAlign = TextAlign.Center
         )
@@ -64,7 +68,7 @@ private fun formatTime(
     millis: Long,
     isConfigured: Boolean,
     separatorsColor: Color,
-    fontSize: TextUnit
+    fontSize: TextUnit,
 ) = AnnotatedString.Builder("").apply {
     val minutes = millis.milliseconds.inWholeMinutes % 60
     val seconds = millis.milliseconds.inWholeSeconds % 60
@@ -79,7 +83,7 @@ private fun AnnotatedString.Builder.appendConfiguredTime(
     minutes: Long,
     seconds: Long,
     tenthsOfSecond: Long,
-    separatorsColor: Color
+    separatorsColor: Color,
 ) {
     val separatorsStyle = SpanStyle(separatorsColor)
     if (minutes > 0) {
@@ -95,7 +99,7 @@ private fun AnnotatedString.Builder.appendNotConfiguredTime(
     minutes: Long,
     seconds: Long,
     separatorsColor: Color,
-    fontSize: TextUnit
+    fontSize: TextUnit,
 ) {
     val separatorsStyle = SpanStyle(separatorsColor, fontSize = fontSize / 3)
     append(minutes.formatMinTwoDigits())

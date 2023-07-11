@@ -43,16 +43,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mobnetic.newtonstimer.MR
-import com.mobnetic.newtonstimer.TestTags
 import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun ButtonsBar(
-    viewModel: TimerViewModel,
-    modifier: Modifier = Modifier
+    viewModel: NewtonsTimerViewModel,
+    modifier: Modifier = Modifier,
 ) {
     val state = viewModel.state
 
@@ -94,11 +92,11 @@ fun ButtonsBar(
 private fun DarkModeToggleButton(
     darkMode: Boolean,
     onDarkModeChanged: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         onClick = { onDarkModeChanged(!darkMode) },
-        modifier.testTag(TestTags.darkModeToggleButton)
+        modifier = modifier
     ) {
         val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
         if (darkMode) {
@@ -124,13 +122,12 @@ private fun PlayPauseButton(
     isRunning: Boolean,
     pause: () -> Unit,
     play: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val color by animateColorAsState(MaterialTheme.colors.primary)
     OutlinedButton(
         onClick = { if (isRunning) pause() else play() },
-        modifier = modifier.aspectRatio(1f)
-            .testTag(TestTags.pauseButton),
+        modifier = modifier.aspectRatio(1f),
         shape = CircleShape,
         border = BorderStroke(1.dp, color),
         colors = ButtonDefaults.outlinedButtonColors(
@@ -158,11 +155,11 @@ private fun PlayPauseButton(
 @Composable
 private fun ResetButton(
     onReset: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         onClick = onReset,
-        modifier = modifier.testTag(TestTags.resetButton)
+        modifier = modifier
     ) {
         val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
         Icon(

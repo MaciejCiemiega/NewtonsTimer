@@ -29,7 +29,7 @@ import com.mobnetic.newtonstimer.timer.TimerState.NotConfigured
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlin.time.Duration.Companion.seconds
 
-class TimerViewModel : ViewModel() {
+class NewtonsTimerViewModel : ViewModel() {
 
     private val hitSoundPlayer = HitSoundPlayer()
     private val ticker = TimerTicker(

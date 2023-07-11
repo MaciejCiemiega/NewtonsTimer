@@ -16,9 +16,8 @@
 package com.mobnetic.newtonstimer.timer
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,12 +32,12 @@ import androidx.compose.ui.unit.dp
 import com.mobnetic.newtonstimer.balls.SHADOW_TOP_OFFSET
 import com.mobnetic.newtonstimer.balls.SwingingBallsContainer
 import com.mobnetic.newtonstimer.sinDegree
-import com.mobnetic.newtonstimer.timer.TimerViewModel.Companion.MAX_ANGLE
+import com.mobnetic.newtonstimer.timer.NewtonsTimerViewModel.Companion.MAX_ANGLE
 import com.mobnetic.newtonstimer.ui.isLandscape
 
 //@Preview(widthDp = 400, heightDp = 700)
 @Composable
-fun NewtonsTimerScreen(timerViewModel: TimerViewModel) {
+fun NewtonsTimerScreen(timerViewModel: NewtonsTimerViewModel) {
     BoxWithConstraints {
         if (isLandscape) {
             NewtonsTimerLandscape(timerViewModel)
@@ -49,11 +48,11 @@ fun NewtonsTimerScreen(timerViewModel: TimerViewModel) {
 }
 
 @Composable
-private fun NewtonsTimerPortrait(viewModel: TimerViewModel) {
+private fun NewtonsTimerPortrait(viewModel: NewtonsTimerViewModel) {
     Column {
         Column(
             modifier = Modifier
-                .animateContentSize()
+                .animateContentSize(configurationTransitionAnimSpec())
                 .weight(0.88f)
         ) {
             val ballsOuterRatio by animateFloatAsState(
@@ -61,11 +60,12 @@ private fun NewtonsTimerPortrait(viewModel: TimerViewModel) {
                     true -> 1.1f * sinDegree(MAX_ANGLE) + BALLS_INNER_ASPECT_RATIO_PORTRAIT
                     else -> sinDegree(MAX_ANGLE) + (BALLS_INNER_ASPECT_RATIO_PORTRAIT / 2f)
                 },
-                animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
+                animationSpec = configurationTransitionAnimSpec()
             )
             SwingingBallsContainer(
                 viewModel = viewModel,
                 ballsInnerRatio = BALLS_INNER_ASPECT_RATIO_PORTRAIT,
+                configurationTransitionAnimSpec = configurationTransitionAnimSpec(),
                 modifier = Modifier.aspectRatio(ballsOuterRatio)
             )
             Display(
@@ -91,11 +91,11 @@ private fun NewtonsTimerPortrait(viewModel: TimerViewModel) {
 }
 
 @Composable
-private fun NewtonsTimerLandscape(viewModel: TimerViewModel) {
+private fun NewtonsTimerLandscape(viewModel: NewtonsTimerViewModel) {
     Row {
         Column(
             modifier = Modifier
-                .animateContentSize()
+                .animateContentSize(configurationTransitionAnimSpec())
                 .weight(1.2f)
                 .padding(16.dp)
         ) {
@@ -117,12 +117,15 @@ private fun NewtonsTimerLandscape(viewModel: TimerViewModel) {
         SwingingBallsContainer(
             viewModel = viewModel,
             ballsInnerRatio = BALLS_INNER_ASPECT_RATIO_LANDSCAPE,
+            configurationTransitionAnimSpec = configurationTransitionAnimSpec(),
             modifier = Modifier
                 .weight(1f)
                 .padding(bottom = SHADOW_TOP_OFFSET + 24.dp)
         )
     }
 }
+
+private fun <T> configurationTransitionAnimSpec() = tween<T>()
 
 private const val BALLS_INNER_ASPECT_RATIO_PORTRAIT = 0.5f
 private const val BALLS_INNER_ASPECT_RATIO_LANDSCAPE = 0.55f
