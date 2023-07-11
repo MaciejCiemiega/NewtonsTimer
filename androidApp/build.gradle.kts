@@ -1,7 +1,10 @@
+@file:Suppress("DSL_SCOPE_VIOLATION")
+
 plugins {
-    kotlin("multiplatform")
-    id("com.android.application")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.compose)
+
 }
 
 kotlin {
@@ -10,21 +13,24 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project(":shared"))
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.appcompat)
+                implementation(libs.androidx.core.ktx)
             }
         }
     }
 }
 
 android {
-    compileSdk = (findProperty("android.compileSdk") as String).toInt()
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
     namespace = "com.mobnetic.newtonstimer"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
         applicationId = "com.mobnetic.newtonstimer"
-        minSdk = (findProperty("android.minSdk") as String).toInt()
-        targetSdk = (findProperty("android.targetSdk") as String).toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        targetSdk = libs.versions.androidTargetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
     }

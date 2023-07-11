@@ -1,0 +1,36 @@
+[versions]
+
+androidCompileSdk = "33"
+androidTargetSdk = "33"
+androidMinSdk = "24"
+androidGradlePlugin = "7.4.2"
+androidxActivityCompose = "1.7.2"
+androidxAppcompat = "1.6.1"
+androidxCoreKtx = "1.10.1"
+compose = "1.4.1"
+koin = "3.4.2"
+kotlin = "1.8.20"
+kotlinxDatetime = "0.4.0"
+mokoMvvm = "0.16.1"
+mokoResources = "0.23.0"
+
+[libraries]
+
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCoreKtx" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+moko-mvvm-core = { module = "dev.icerock.moko:mvvm-core", version.ref = "mokoMvvm" }
+moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "mokoResources" }
+moko-resources = { module = "dev.icerock.moko:resources", version.ref = "mokoResources" }
+
+[plugins]
+
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-native-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "mokoResources" }

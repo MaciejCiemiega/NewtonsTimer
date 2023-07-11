@@ -1,9 +1,11 @@
+@file:Suppress("DSL_SCOPE_VIOLATION")
+
 plugins {
-    kotlin("multiplatform")
-    kotlin("native.cocoapods")
-    id("com.android.library")
-    id("org.jetbrains.compose")
-    id("dev.icerock.mobile.multiplatform-resources")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.native.cocoapods)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.moko.resources)
 }
 
 kotlin {
@@ -35,24 +37,20 @@ kotlin {
                 implementation(compose.material)
                 implementation(compose.materialIconsExtended)
 
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation(libs.kotlinx.datetime)
 
-                api("dev.icerock.moko:mvvm-core:0.16.1")
-                implementation("dev.icerock.moko:resources:0.23.0")
-                implementation("dev.icerock.moko:resources-compose:0.23.0")
+                api(libs.moko.mvvm.core)
+                implementation(libs.moko.resources)
+                implementation(libs.moko.resources.compose)
 
-                implementation("io.insert-koin:koin-core:3.4.2")
+                implementation(libs.koin.core)
             }
         }
         val commonTest by getting
 
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.7.2")
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.10.1")
-
-                implementation("io.insert-koin:koin-android:3.4.2")
+                implementation(libs.koin.android)
             }
         }
         val iosX64Main by getting
@@ -68,7 +66,7 @@ kotlin {
 }
 
 android {
-    compileSdk = (findProperty("android.compileSdk") as String).toInt()
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
     namespace = "com.mobnetic.newtonstimer.common"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -76,7 +74,7 @@ android {
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
-        minSdk = (findProperty("android.minSdk") as String).toInt()
+        minSdk = libs.versions.androidMinSdk.get().toInt()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
