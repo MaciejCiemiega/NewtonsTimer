@@ -20,6 +20,7 @@ package com.mobnetic.newtonstimer.configuration
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -45,19 +46,38 @@ import com.mobnetic.newtonstimer.timer.NewtonsTimerViewModel
 
 @Composable
 fun ConfigurationHint(
+    ifConfigured: Boolean,
     configuredAngle: Float,
     ballSize: BallSize,
 ) {
     val color by animateColorAsState(MaterialTheme.colors.onBackground)
     val animateStartAngle by animatedHintArcStartAngle()
+    val animatedAlpha by animateFloatAsState(if (ifConfigured) 0f else 1f)
     Box(
         Modifier.drawBehind {
-            drawHintArc(ballSize, sweepAngle = NewtonsTimerViewModel.MAX_ANGLE, color, alpha = 0.3f)
+            if (animatedAlpha == 0f) return@drawBehind
+
+            drawHintArc(
+                ballSize = ballSize,
+                sweepAngle = NewtonsTimerViewModel.MAX_ANGLE,
+                color = color,
+                alpha = animatedAlpha * 0.3f
+            )
 
             if (configuredAngle > 0f) {
-                drawHintArc(ballSize, sweepAngle = configuredAngle, color)
+                drawHintArc(
+                    ballSize = ballSize,
+                    sweepAngle = configuredAngle,
+                    color = color,
+                    alpha = animatedAlpha
+                )
             } else {
-                drawAnimatedHintArc(ballSize, animatedHintStartAngle = animateStartAngle, color)
+                drawAnimatedHintArc(
+                    ballSize = ballSize,
+                    animatedHintStartAngle = animateStartAngle,
+                    color = color,
+                    alpha = animatedAlpha
+                )
             }
         }
     )
@@ -89,9 +109,15 @@ private fun DrawScope.drawAnimatedHintArc(
     ballSize: BallSize,
     animatedHintStartAngle: Float,
     color: Color,
+    alpha: Float = 1f,
 ) {
     clipPath(animatedHintClipPath(ballSize, animatedStartAngle = animatedHintStartAngle)) {
-        drawHintArc(ballSize, sweepAngle = NewtonsTimerViewModel.MAX_ANGLE, color)
+        drawHintArc(
+            ballSize = ballSize,
+            sweepAngle = NewtonsTimerViewModel.MAX_ANGLE,
+            color = color,
+            alpha = alpha
+        )
     }
 }
 

@@ -38,7 +38,7 @@ import kotlin.math.abs
 fun RowScope.Shadow(
     angle: Float,
     ballSize: BallSize,
-    alpha: Float = 1f,
+    alpha: () -> Float = { 1f },
 ) {
     Box(
         modifier = Modifier
@@ -50,15 +50,14 @@ fun RowScope.Shadow(
 }
 
 @Composable
-private fun ShadowGradientCircle(alpha: Float) {
+private fun ShadowGradientCircle(alpha: () -> Float) {
     val shadowColor = Colors.ballShadow
     val gradient = remember(shadowColor) { createShadowGradient(shadowColor) }
-    val alphaModifier = if (alpha != 1f) Modifier.graphicsLayer(alpha = alpha) else Modifier
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f)
-            .then(alphaModifier)
+            .graphicsLayer { this.alpha = alpha() }
             .background(gradient)
     )
 }

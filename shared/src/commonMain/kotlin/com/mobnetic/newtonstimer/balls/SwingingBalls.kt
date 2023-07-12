@@ -33,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import com.mobnetic.newtonstimer.configuration.ConfigurationHint
 import com.mobnetic.newtonstimer.configuration.configurationDragModifier
@@ -61,7 +60,7 @@ fun SwingingBallsContainer(
             modifier = Modifier
                 .fillMaxHeight()
                 .aspectRatio(ballsInnerRatio)
-                .graphicsLayer(translationX = translationX)
+                .graphicsLayer { this.translationX = translationX }
         )
     }
 }
@@ -75,7 +74,8 @@ private fun SwingingBalls(
         val angles = animateAnglesAsState(viewModel)
 
         val isConfigured = viewModel.isConfigured
-        val otherBallsAlpha by animateFloatAsState(if (isConfigured) 1f else CONFIGURATION_OTHER_BALLS_ALPHA)
+        val otherBallsAlpha =
+            animateFloatAsState(if (isConfigured) 1f else CONFIGURATION_OTHER_BALLS_ALPHA)
 
         var ballSize by remember { mutableStateOf(BallSize()) }
         BoxWithConstraints(
@@ -86,19 +86,22 @@ private fun SwingingBalls(
             val ballWidth = constraints.maxWidth / angles.size
             ballSize = BallSize(ballWidth / 2, constraints.maxHeight)
 
-            if (!isConfigured) {
-                ConfigurationHint(angles.first(), ballSize)
-            }
+            ConfigurationHint(isConfigured, angles.first(), ballSize)
+
             BallsOnStrings(
-                isConfigured,
-                angles,
-                ballSize,
-                otherBallsAlpha,
+                isConfigured = isConfigured,
+                angles = angles,
+                ballSize = ballSize,
+                otherBallsAlpha = otherBallsAlpha::value,
                 onConfigurationAngleChanged = viewModel::configureStartAngle,
                 onDragEnd = viewModel::play
             )
         }
-        Shadows(angles, ballSize, otherBallsAlpha)
+        Shadows(
+            angles = angles,
+            ballSize = ballSize,
+            otherBallsAlpha = otherBallsAlpha::value,
+        )
     }
 }
 
@@ -107,7 +110,7 @@ private fun BallsOnStrings(
     isConfigured: Boolean,
     angles: List<Float>,
     ballSize: BallSize,
-    otherBallsAlpha: Float,
+    otherBallsAlpha: () -> Float,
     onConfigurationAngleChanged: (Float) -> Unit,
     onDragEnd: () -> Unit,
 ) {
@@ -118,9 +121,16 @@ private fun BallsOnStrings(
             onDragEnd
         ) else Modifier
 
-        BallOnString(angle = angles.first(), modifier = draggable)
+        BallOnString(
+            angle = angles.first(),
+            modifier = draggable
+        )
+
         angles.forOtherAngles { angle ->
-            BallOnString(angle, Modifier.alpha(otherBallsAlpha))
+            BallOnString(
+                angle = angle,
+                modifier = Modifier.graphicsLayer { alpha = otherBallsAlpha() }
+            )
         }
     }
 }
@@ -129,12 +139,16 @@ private fun BallsOnStrings(
 private fun Shadows(
     angles: List<Float>,
     ballSize: BallSize,
-    otherBallsAlpha: Float,
+    otherBallsAlpha: () -> Float,
 ) {
     Row(Modifier.fillMaxWidth()) {
         Shadow(angles.first(), ballSize)
         angles.forOtherAngles { angle ->
-            Shadow(angle, ballSize, alpha = otherBallsAlpha)
+            Shadow(
+                angle = angle,
+                ballSize = ballSize,
+                alpha = otherBallsAlpha
+            )
         }
     }
 }

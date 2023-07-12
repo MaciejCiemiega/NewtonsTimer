@@ -125,7 +125,7 @@ private fun NewtonsTimerLandscape(viewModel: NewtonsTimerViewModel) {
     }
 }
 
-private fun <T> configurationTransitionAnimSpec() = tween<T>()
+private fun <T> configurationTransitionAnimSpec() = tween<T>(durationMillis = 400)
 
 private const val BALLS_INNER_ASPECT_RATIO_PORTRAIT = 0.5f
 private const val BALLS_INNER_ASPECT_RATIO_LANDSCAPE = 0.55f
