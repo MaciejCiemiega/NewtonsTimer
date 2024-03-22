@@ -4,7 +4,8 @@
 
 
 ## :scroll: Description
-Simple timer app inspired by Newton's Cradle. Created in Jetpack Compose for [#AndroidDevChallenge](https://developer.android.com/dev-challenge).
+Simple timer app inspired by Newton's Cradle. Originally created in Jetpack Compose for [#AndroidDevChallenge](https://developer.android.com/dev-challenge).  
+Later migrated to **Compose Multiplatform** with support for Android, iOS and Desktop.
 
 
 ## :bulb: Motivation and Context
@@ -33,7 +34,7 @@ Some highlights and links to code:
 
 
 ## :camera_flash: Screenshots
-<img src="/results/video.gif" width="360">&emsp;<img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">
+<img src="/results/video.gif" width="360">&emsp;<img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260"><img src="/results/screenshot_ios.png" width="260"><img src="/results/screenshot_desktop.png" width="460">
 
 ## License
 ```
