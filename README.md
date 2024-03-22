@@ -34,7 +34,7 @@ Some highlights and links to code:
 
 
 ## :camera_flash: Screenshots
-<img src="/results/video.gif" width="360">&emsp;<img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">&emsp;<img src="/results/screenshot_ios.png" width="260">&emsp;<img src="/results/screenshot_desktop.png" width="640">
+<img src="/results/video.gif" width="360">&emsp;<img src="/results/screenshot_android.png" width="260">&emsp;<img src="/results/screenshot_ios.png" width="260">&emsp;<img src="/results/screenshot_desktop.png" width="640">
 
 ## License
 ```
