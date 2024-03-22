@@ -1,7 +1,6 @@
 rootProject.name = "NewtonsTimer"
 
-include(":androidApp")
-include(":shared")
+include(":composeApp")
 
 pluginManagement {
     repositories {
