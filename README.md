@@ -19,7 +19,7 @@ Some highlights and links to code:
 - Smooth transitioning between states:
   - Configuration mode and started mode - [code](/composeApp/src/commonMain/kotlin/com/mobnetic/newtonstimer/timer/NewtonsTimerScreen.kt)
 - Swinging animation is controlling animation from ViewModel and can be paused/resumed:
-  - `TargetBasedAnimation` + update loop in a Coroutine - [code](/composeApp/src/commonMain/kotlin/com/mobnetic/newtonstimer/timer/TimerViewModel.kt)
+  - `TargetBasedAnimation` + update loop in a Coroutine - [code](/composeApp/src/commonMain/kotlin/com/mobnetic/newtonstimer/timer/NewtonsTimerViewModel.kt)
 - Trying to recreate gravitational swing with hit rebound and colliding balls:
   - Custom `Easing` and many parameters - [code](/composeApp/src/commonMain/kotlin/com/mobnetic/newtonstimer/balls/SwingAnimation.kt)
 - Shadows are blurred and scaled down if ball is swinging higher from the ground:
