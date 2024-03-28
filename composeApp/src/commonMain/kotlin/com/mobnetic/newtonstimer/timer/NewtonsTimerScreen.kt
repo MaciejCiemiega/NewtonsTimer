@@ -35,8 +35,9 @@ import com.mobnetic.newtonstimer.balls.SwingingBallsContainer
 import com.mobnetic.newtonstimer.sinDegree
 import com.mobnetic.newtonstimer.timer.NewtonsTimerViewModel.Companion.MAX_ANGLE
 import com.mobnetic.newtonstimer.ui.isLandscape
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
-//@Preview(widthDp = 400, heightDp = 700)
+@Preview(/*widthDp = 400, heightDp = 700*/)
 @Composable
 fun NewtonsTimerScreen(timerViewModel: NewtonsTimerViewModel) {
     BoxWithConstraints {

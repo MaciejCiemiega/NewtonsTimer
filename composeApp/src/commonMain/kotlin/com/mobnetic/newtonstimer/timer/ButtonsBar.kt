@@ -44,8 +44,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mobnetic.newtonstimer.MR
-import dev.icerock.moko.resources.compose.stringResource
+import newtonstimer.composeapp.generated.resources.Res
+import newtonstimer.composeapp.generated.resources.dark_mode_a11y
+import newtonstimer.composeapp.generated.resources.light_mode_a11y
+import newtonstimer.composeapp.generated.resources.pause_a11y
+import newtonstimer.composeapp.generated.resources.play_a11y
+import newtonstimer.composeapp.generated.resources.reset_a11y
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ButtonsBar(
@@ -102,14 +107,14 @@ private fun DarkModeToggleButton(
         if (darkMode) {
             Icon(
                 imageVector = Icons.Default.LightMode,
-                contentDescription = stringResource(MR.strings.light_mode_a11y),
+                contentDescription = stringResource(Res.string.light_mode_a11y),
                 modifier = Modifier.size(ICONS_SIZE),
                 tint = color
             )
         } else {
             Icon(
                 imageVector = Icons.Default.DarkMode,
-                contentDescription = stringResource(MR.strings.dark_mode_a11y),
+                contentDescription = stringResource(Res.string.dark_mode_a11y),
                 modifier = Modifier.size(ICONS_SIZE),
                 tint = color
             )
@@ -139,13 +144,13 @@ private fun PlayPauseButton(
         if (isRunning) {
             Icon(
                 imageVector = Icons.Default.Pause,
-                contentDescription = stringResource(MR.strings.pause_a11y),
+                contentDescription = stringResource(Res.string.pause_a11y),
                 modifier = Modifier.size(ICONS_SIZE)
             )
         } else {
             Icon(
                 imageVector = Icons.Default.PlayArrow,
-                contentDescription = stringResource(MR.strings.play_a11y),
+                contentDescription = stringResource(Res.string.play_a11y),
                 modifier = Modifier.size(ICONS_SIZE)
             )
         }
@@ -164,7 +169,7 @@ private fun ResetButton(
         val color by animateColorAsState(targetValue = MaterialTheme.colors.onSurface)
         Icon(
             imageVector = Icons.Default.Close,
-            contentDescription = stringResource(MR.strings.reset_a11y),
+            contentDescription = stringResource(Res.string.reset_a11y),
             modifier = Modifier.size(ICONS_SIZE),
             tint = color
         )

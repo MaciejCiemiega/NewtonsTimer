@@ -28,15 +28,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.TextUnit
-import com.mobnetic.newtonstimer.MR
 import com.mobnetic.newtonstimer.formatMinTwoDigits
-import dev.icerock.moko.resources.compose.fontFamilyResource
+import newtonstimer.composeapp.generated.resources.Res
+import newtonstimer.composeapp.generated.resources.Roboto_Thin
+import org.jetbrains.compose.resources.Font
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
@@ -57,7 +59,7 @@ fun Display(
                 fontSize
             ),
             color = digitsColor,
-            fontFamily = fontFamilyResource(MR.fonts.Roboto.thin),
+            fontFamily = FontFamily(Font(Res.font.Roboto_Thin)),
             fontSize = fontSize,
             textAlign = TextAlign.Center
         )

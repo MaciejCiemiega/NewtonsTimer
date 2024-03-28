@@ -30,6 +30,13 @@ kotlin {
         }
     }
 
+    js(IR) {
+        browser {
+            useCommonJs()
+        }
+        binaries.executable()
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -37,6 +44,8 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material)
                 implementation(compose.materialIconsExtended)
+                implementation(compose.components.uiToolingPreview)
+                implementation(compose.components.resources)
 
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.datetime)
@@ -44,7 +53,6 @@ kotlin {
                 api(libs.moko.mvvm.core)
                 api(libs.moko.mvvm.compose)
                 implementation(libs.moko.resources)
-                implementation(libs.moko.resources.compose)
 
                 implementation(libs.koin.core)
             }
@@ -78,6 +86,10 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+        }
+
+        val jsMain by getting {
+            dependsOn(commonMain)
         }
 
         all {
@@ -120,6 +132,10 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+compose.experimental {
+    web.application {}
 }
 
 multiplatformResources {
