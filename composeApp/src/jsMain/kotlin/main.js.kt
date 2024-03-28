@@ -29,7 +29,7 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     startDi()
     onWasmReady {
-        CanvasBasedWindow("NewtonsTimer") {
+        CanvasBasedWindow("Newton's Timer") {
 
             val timerViewModel = remember { NewtonsTimerViewModel() }
 

@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose)
-    alias(libs.plugins.moko.resources)
 }
 
 kotlin {
@@ -52,7 +51,6 @@ kotlin {
 
                 api(libs.moko.mvvm.core)
                 api(libs.moko.mvvm.compose)
-                implementation(libs.moko.resources)
 
                 implementation(libs.koin.core)
             }
@@ -105,10 +103,6 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-    sourceSets["main"].apply {
-//        assets.srcDir(File(buildDir, "generated/moko/androidMain/assets"))
-        res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
-    }
 
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()
@@ -136,30 +130,4 @@ compose.desktop {
 
 compose.experimental {
     web.application {}
-}
-
-multiplatformResources {
-    multiplatformResourcesPackage = "com.mobnetic.newtonstimer"
-}
-
-// Fix for moko resource
-afterEvaluate {
-    tasks.matching { it.name == "desktopProcessResources" }.configureEach {
-        dependsOn(tasks.matching { it.name == "generateMRdesktopMain" })
-    }
-    tasks.matching { it.name == "iosSimulatorArm64ProcessResources" }.configureEach {
-        dependsOn(tasks.matching { it.name == "generateMRiosSimulatorArm64Main" })
-    }
-    tasks.matching { it.name == "metadataIosMainProcessResources" }.configureEach {
-        dependsOn(tasks.matching { it.name == "generateMRcommonMain" })
-    }
-    tasks.matching { it.name == "metadataCommonMainProcessResources" }.configureEach {
-        dependsOn(tasks.matching { it.name == "generateMRcommonMain" })
-    }
-    tasks.matching { it.name == "iosX64ProcessResources" }.configureEach {
-        dependsOn(tasks.matching { it.name == "generateMRiosX64Main" })
-    }
-    tasks.matching { it.name == "iosArm64ProcessResources" }.configureEach {
-        dependsOn(tasks.matching { it.name == "generateMRiosArm64Main" })
-    }
 }

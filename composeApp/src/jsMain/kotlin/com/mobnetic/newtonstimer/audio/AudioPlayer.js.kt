@@ -1,16 +1,15 @@
 package com.mobnetic.newtonstimer.audio
 
-import dev.icerock.moko.resources.AssetResource
 import org.w3c.dom.Audio
 
 actual class AudioPlayer {
 
     private var audio: Audio? = null
 
-    actual fun prepare(resource: AssetResource) {
+    actual fun prepare(audioFile: AudioFile) {
         release()
 
-        audio = Audio(resource.originalPath)
+        audio = Audio(audioFile.path)
     }
 
     actual fun setVolume(volume: Float) {

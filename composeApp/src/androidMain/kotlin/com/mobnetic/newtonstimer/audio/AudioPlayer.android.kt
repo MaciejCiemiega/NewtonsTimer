@@ -2,17 +2,16 @@ package com.mobnetic.newtonstimer.audio
 
 import android.app.Application
 import android.media.MediaPlayer
-import dev.icerock.moko.resources.AssetResource
 
 actual class AudioPlayer(private val application: Application) {
 
     private var player: MediaPlayer? = null
 
-    actual fun prepare(resource: AssetResource) {
+    actual fun prepare(audioFile: AudioFile) {
         release()
 
         player = MediaPlayer().apply {
-            setDataSource(application.assets.openFd(resource.path))
+            setDataSource(application.assets.openFd(audioFile.fileNameWithExtension))
             prepare()
         }
     }

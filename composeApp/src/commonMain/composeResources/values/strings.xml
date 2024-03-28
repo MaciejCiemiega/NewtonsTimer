@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Newton\'s Timer</string>
+    <string name="app_name">Newton's Timer</string>
     <string name="play_a11y">Play</string>
     <string name="pause_a11y">Pause</string>
     <string name="reset_a11y">Reset</string>

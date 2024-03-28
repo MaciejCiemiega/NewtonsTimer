@@ -16,5 +16,4 @@ iosApp/iosApp.xcworkspace/*
 iosApp/iosApp.xcodeproj/*
 !iosApp/iosApp.xcodeproj/project.pbxproj
 shared/shared.podspec
-moko-resources-generated.js
 yarn.lock
