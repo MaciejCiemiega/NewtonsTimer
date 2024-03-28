@@ -13,7 +13,6 @@ koin = "3.5.0"
 kotlin = "1.9.20"
 kotlinxDatetime = "0.5.0"
 mokoMvvm = "0.16.1"
-mokoResources = "0.23.0"
 korge = "5.4.0"
 
 [libraries]
@@ -28,8 +27,6 @@ kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 moko-mvvm-core = { module = "dev.icerock.moko:mvvm-core", version.ref = "mokoMvvm" }
 moko-mvvm-compose = { module = "dev.icerock.moko:mvvm-compose", version.ref = "mokoMvvm" }
-moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "mokoResources" }
-moko-resources = { module = "dev.icerock.moko:resources", version.ref = "mokoResources" }
 korge-core = { module = "com.soywiz.korge:korge-core", version.ref = "korge" }
 
 [plugins]
@@ -39,4 +36,3 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-native-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
-moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "mokoResources" }

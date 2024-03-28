@@ -1,6 +1,5 @@
 package com.mobnetic.newtonstimer.audio
 
-import dev.icerock.moko.resources.AssetResource
 import korlibs.audio.sound.Sound
 import korlibs.audio.sound.readSound
 import korlibs.io.file.std.resourcesVfs
@@ -18,11 +17,11 @@ actual class AudioPlayer {
     private var playScope: CoroutineScope? = null
     private val requestFlow = Channel<Unit>()
 
-    actual fun prepare(resource: AssetResource) {
+    actual fun prepare(audioFile: AudioFile) {
         release()
         playScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         playScope?.launch {
-            sound = resourcesVfs[resource.filePath].readSound()
+            sound = resourcesVfs[audioFile.path].readSound()
 
             requestFlow.receiveAsFlow().collect {
                 sound?.play()

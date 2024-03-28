@@ -1,6 +1,5 @@
 package com.mobnetic.newtonstimer.audio
 
-import com.mobnetic.newtonstimer.MR
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -9,7 +8,7 @@ class HitSoundPlayer : KoinComponent {
     private val mediaPlayer: AudioPlayer by inject()
 
     init {
-        mediaPlayer.prepare(MR.assets.ball_hit)
+        mediaPlayer.prepare(BallHitAudioFile)
     }
 
     fun playHitSound(volume: Float) {
@@ -21,3 +20,5 @@ class HitSoundPlayer : KoinComponent {
         mediaPlayer.release()
     }
 }
+
+private val BallHitAudioFile = AudioFile(fileName = "ball_hit", extension = "mp3")
